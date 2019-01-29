@@ -11,6 +11,8 @@ import {
 import { Actions } from 'react-native-router-flux';
 import TabBarIcon from '../components/TabBarIcon';
 import { Subheader } from '../components/common';
+import { connect } from 'react-redux';
+import { fetchRecommendedRecipes } from '../actions/RecipeActions';
 
 export default class HomeScene extends React.Component {
     static navigationOptions = {
@@ -25,13 +27,13 @@ export default class HomeScene extends React.Component {
     };
 
     componentWillMount() {
-        console.log('home mount');
+        // fetchRecommendedRecipes();
+        console.log(state);
     }
 
     render() {
         return (
             <ScrollView contentContainerStyle={styles.container}>
-                <Subheader>Polecane przepisy</Subheader>
                 <Text onPress={() => {
                     // Actions.categories({type: 'reset'});
                     Actions.categories();
@@ -47,3 +49,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#fafafa',
     },
 });
+
+// const mapStateToProps = (state, ownProps) => {
+//     const { recommendedRecipes } = state;
+//
+//     return { recommendedRecipes };
+// }
+//
+// export default connect(mapStateToProps, { fetchRecommendedRecipes })(HomeScene);

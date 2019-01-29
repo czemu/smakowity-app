@@ -1,7 +1,7 @@
 import Header from './Header';
 import Subheader from './Subheader';
 
-export {
+export default {
     Header,
     Subheader
 }
