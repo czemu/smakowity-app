@@ -14,7 +14,7 @@ import { Subheader } from '../components/common';
 import { connect } from 'react-redux';
 import { fetchRecommendedRecipes } from '../actions/RecipeActions';
 
-export default class HomeScene extends React.Component {
+export class HomeScene extends React.Component {
     static navigationOptions = {
         header: null,
         tabBarLabel: 'Start',
@@ -26,9 +26,14 @@ export default class HomeScene extends React.Component {
       )
     };
 
-    componentWillMount() {
-        // fetchRecommendedRecipes();
-        console.log(state);
+    componentDidMount() {
+        this.props.fetchRecommendedRecipes();
+    }
+
+    renderRecommendedRecipes() {
+        return this.props.recommendedRecipes.map(recipe =>
+             <Text key={recipe.id}>{recipe.name}</Text>
+         );
     }
 
     render() {
@@ -38,6 +43,7 @@ export default class HomeScene extends React.Component {
                     // Actions.categories({type: 'reset'});
                     Actions.categories();
                 }}>Kategorie</Text>
+                {this.renderRecommendedRecipes()}
             </ScrollView>
         );
     }
@@ -50,10 +56,17 @@ const styles = StyleSheet.create({
     },
 });
 
-// const mapStateToProps = (state, ownProps) => {
-//     const { recommendedRecipes } = state;
-//
-//     return { recommendedRecipes };
-// }
-//
-// export default connect(mapStateToProps, { fetchRecommendedRecipes })(HomeScene);
+const mapStateToProps = (state, ownProps) => {
+    const reducer = state.RecipesReducer;
+    const { recommendedRecipes, loadingRecommendedRecipes } = reducer;
+
+    return { recommendedRecipes, loadingRecommendedRecipes };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchRecommendedRecipes: () => dispatch(fetchRecommendedRecipes())
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScene);

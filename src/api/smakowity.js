@@ -12,7 +12,10 @@ export function getRecommendedRecipes() {
         }
       `
   )
-    .then(recipes => recipes.json());
+    .then(recipes => recipes.json())
+    .then(recipes => {
+        return recipes.data.recipes;
+    });
 }
 
 function doRequest(query) {

@@ -26,14 +26,11 @@ export function fetchRecommendedRecipesFailure() {
 }
 
 export function fetchRecommendedRecipes() {
-    return getRecommendedRecipes();
+    return dispatch => {
+        dispatch(fetchRecommendedRecipesRequest());
 
-    // return dispatch => {
-    //     console.log('fetch 1');
-    //     dispatch(fetchRecommendedRecipesRequest());
-    //
-    //     return getRecommendedRecipes()
-    //         .then(recipes => dispatch(fetchRecommendedRecipesSuccess(recipes)))
-    //         .catch(() => dispatch(fetchRecommendedRecipesFailure()))
+        return getRecommendedRecipes()
+            .then(recipes => dispatch(fetchRecommendedRecipesSuccess(recipes)))
+            .catch(() => dispatch(fetchRecommendedRecipesFailure()))
     }
 }
