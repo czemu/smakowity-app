@@ -4,7 +4,7 @@ export function getRecommendedRecipes() {
   return doRequest(
       `
         {
-            recipes(limit: 5) {
+            recipes(limit: 15) {
                 id
                 name
                 img_url

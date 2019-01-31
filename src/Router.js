@@ -8,8 +8,8 @@ import FavoritesScene from './scenes/FavoritesScene';
 const RouterComponent = () => {
     return (
         <Router>
-            <Stack key="root" tabs={true}>
-                <Scene key="home" component={HomeScene} />
+            <Stack key="root" tabs={true} tabBarStyle={styles.tabBarStyle}>
+                <Scene key="home" component={HomeScene } />
                 <Scene key="categories" component={CategoriesScene} />
                 <Scene key="search" component={SearchScene} />
                 <Scene key="favorites" component={FavoritesScene} />
@@ -17,5 +17,11 @@ const RouterComponent = () => {
         </Router>
     );
 }
+
+const styles = {
+    tabBarStyle: {
+        backgroundColor: '#fff'
+    }
+};
 
 export default RouterComponent;
