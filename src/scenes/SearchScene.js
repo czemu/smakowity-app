@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
-import TabBarIcon from '../components/TabBarIcon';
+import TabBarIcon from '../components/common/TabBarIcon';
 
 export default class SearchScene extends React.Component {
     static navigationOptions = {

@@ -11,7 +11,7 @@ export default class App extends React.Component {
     return (
         <Provider store={store}>
           <View style={styles.container}>
-            <StatusBar barStyle="light-content" style={styles.statusBar} />
+            <StatusBar barStyle="light-content" backgroundColor="blue" translucent={false} />
             <Router />
           </View>
         </Provider>
@@ -25,6 +25,7 @@ const styles = {
   },
   container: {
     flex: 1,
+    paddingTop: StatusBar.currentHeight,
     backgroundColor: Colors.backgroundColor,
   },
 };

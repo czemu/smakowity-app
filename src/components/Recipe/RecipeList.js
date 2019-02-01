@@ -20,7 +20,13 @@ class RecipeList extends PureComponent {
         }
 
         return (
-            <FlatList data={this.props.recipes} renderItem={this._renderItem} keyExtractor={this._keyExtractor} style={styles.container} />
+            <FlatList
+                data={this.props.recipes}
+                renderItem={this._renderItem}
+                keyExtractor={this._keyExtractor}
+                style={styles.container}
+                contentContainerStyle={{paddingBottom: 8}}
+            />
         );
     }
 };
@@ -28,7 +34,7 @@ class RecipeList extends PureComponent {
 const styles = {
     container: {
         flex: 1,
-        padding: 10,
+        paddingHorizontal: 8
     },
 
     indicatorContainer: {

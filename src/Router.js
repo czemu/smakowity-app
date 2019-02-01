@@ -4,12 +4,13 @@ import HomeScene from './scenes/HomeScene';
 import CategoriesScene from './scenes/CategoriesScene';
 import SearchScene from './scenes/SearchScene';
 import FavoritesScene from './scenes/FavoritesScene';
+import Colors from './constants/Colors';
 
 const RouterComponent = () => {
     return (
         <Router>
-            <Stack key="root" tabs={true} tabBarStyle={styles.tabBarStyle}>
-                <Scene key="home" component={HomeScene } />
+            <Stack key="root" tabs={true} tabBarStyle={styles.tabBarStyle}  activeTintColor={Colors.redColor}  headerForceInset={{ top: 'never' }}>
+                <Scene key="home" component={HomeScene }  headerForceInset={{ top: 'never' }}/>
                 <Scene key="categories" component={CategoriesScene} />
                 <Scene key="search" component={SearchScene} />
                 <Scene key="favorites" component={FavoritesScene} />

@@ -1,16 +1,13 @@
 import React from 'react';
 import {
     Image,
-    Platform,
     ScrollView,
-    StyleSheet,
     Text,
-    TouchableOpacity,
     View,
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import { Subheader } from '../components/common';
-import TabBarIcon from '../components/TabBarIcon';
+import SearchHeader from '../components/common/SearchHeader';
+import TabBarIcon from '../components/common/TabBarIcon';
 import { connect } from 'react-redux';
 import { fetchRecommendedRecipes } from '../actions/RecipeActions';
 import RecipeList from '../components/Recipe/RecipeList';
@@ -18,12 +15,8 @@ import Colors from '../constants/Colors';
 
 export class HomeScene extends React.Component {
     static navigationOptions = {
-        header: null,
+        headerTitle: () => <SearchHeader placeholder="Szukaj przepisów..." />,
         tabBarLabel: 'Start',
-        labelStyle: {
-            color: '#000',
-            height: 400
-        },
         tabBarIcon: ({ focused }) => (
           <TabBarIcon
             focused={focused}
@@ -47,7 +40,7 @@ export class HomeScene extends React.Component {
 
 const styles = {
     container: {
-        flex: 1
+        flex: 1,
     },
 };
 
