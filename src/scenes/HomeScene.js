@@ -9,7 +9,11 @@ import { Actions } from 'react-native-router-flux';
 import SearchHeader from '../components/common/SearchHeader';
 import TabBarIcon from '../components/common/TabBarIcon';
 import { connect } from 'react-redux';
-import { fetchRecommendedRecipes, refreshRecommendedRecipes } from '../actions/RecipeActions';
+import {
+    fetchRecommendedRecipes,
+    refreshRecommendedRecipes,
+    fetchMoreRecommendedRecipes
+} from '../actions/RecipeActions';
 import RecipeList from '../components/Recipe/RecipeList';
 import Colors from '../constants/Colors';
 
@@ -29,31 +33,42 @@ export class HomeScene extends React.Component {
         super(props);
 
         this.state = {
-            limit: 15,
-            offset: 5,
+            limit: 10,
+            offset: 0,
+            more_items: 5,
+            max_items: 100
         }
     }
 
     componentDidMount() {
-        this.props.fetchRecommendedRecipes(this.state.limit, this.state.offset);
+        this.setState({offset: this.state.limit});
+        this.props.fetchRecommendedRecipes(this.state.limit, 0);
     }
 
     _onRefresh() {
-        this.props.refreshRecommendedRecipes(this.state.limit, this.state.offset);
+        this.setState({offset: this.state.limit});
+        this.props.refreshRecommendedRecipes(this.state.limit);
 
     }
 
     _onEndReached() {
-
+        if ( ! this.props.loading && ! this.props.refreshing && (this.state.offset + this.state.more_items) <= this.state.max_items) {
+            this.setState({offset: this.state.offset + this.state.more_items});
+            this.props.fetchMoreRecommendedRecipes(this.state.more_items, this.state.offset);
+        }
     }
 
     render() {
         return (
             <View style={styles.container}>
                 <RecipeList
+                    loading={this.props.loading}
+                    refreshing={this.props.refreshing}
                     recipes={this.props.recipes}
                     onRefresh={this._onRefresh.bind(this)}
                     onEndReached={this._onEndReached.bind(this)}
+                    initialNumToRender={this.state.limit}
+                    onEndReachedThreshold={1}
                 />
             </View>
         );
@@ -76,7 +91,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         fetchRecommendedRecipes: (limit, offset) => dispatch(fetchRecommendedRecipes(limit, offset)),
-        refreshRecommendedRecipes: (limit, offset) => dispatch(refreshRecommendedRecipes(limit, offset)),
+        fetchMoreRecommendedRecipes: (limit, offset) => dispatch(fetchMoreRecommendedRecipes(limit, offset)),
+        refreshRecommendedRecipes: (limit) => dispatch(refreshRecommendedRecipes(limit)),
     }
 };
 

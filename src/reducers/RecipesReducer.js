@@ -5,7 +5,9 @@ import {
 
     REFRESH_RECIPES,
     REFRESH_RECIPES_SUCCESS,
-    REFRESH_RECIPES_FAILURE
+    REFRESH_RECIPES_FAILURE,
+
+    FETCH_MORE_RECIPES_SUCCESS
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -28,6 +30,8 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, refreshing: false, recipes: action.payload };
         case REFRESH_RECIPES_FAILURE:
             return { ...state, refreshing: false };
+        case FETCH_MORE_RECIPES_SUCCESS:
+            return { ...state, loading: false, recipes: [...state.recipes, ...action.payload]};
         default:
             return state;
     }

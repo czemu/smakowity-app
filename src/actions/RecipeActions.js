@@ -5,7 +5,9 @@ import {
 
     REFRESH_RECIPES,
     REFRESH_RECIPES_SUCCESS,
-    REFRESH_RECIPES_FAILURE
+    REFRESH_RECIPES_FAILURE,
+
+    FETCH_MORE_RECIPES_SUCCESS
 } from './types';
 
 import { getRecommendedRecipes } from '../api/smakowity';
@@ -48,6 +50,13 @@ export function refreshRecipesFailure() {
     }
 }
 
+export function fetchMoreRecipesSuccess(recipes) {
+    return {
+        type: FETCH_MORE_RECIPES_SUCCESS,
+        payload: recipes,
+    }
+}
+
 export function fetchRecommendedRecipes(limit, offset) {
     return dispatch => {
         dispatch(fetchRecipesRequest());
@@ -65,5 +74,15 @@ export function refreshRecommendedRecipes(limit) {
         return getRecommendedRecipes(limit, 0)
             .then(recipes => dispatch(refreshRecipesSuccess(recipes)))
             .catch(() => dispatch(refreshRecipesFailure()))
+    }
+}
+
+export function fetchMoreRecommendedRecipes(limit, offset) {
+    return dispatch => {
+        dispatch(fetchRecipesRequest());
+
+        return getRecommendedRecipes(limit, offset)
+            .then(recipes => dispatch(fetchMoreRecipesSuccess(recipes)))
+            .catch(() => dispatch(fetchRecipesFailure()));
     }
 }
