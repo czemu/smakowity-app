@@ -1,23 +1,33 @@
 import {
-    FETCH_RECOMMENDED_RECIPES,
-    FETCH_RECOMMENDED_RECIPES_SUCCESS,
-    FETCH_RECOMMENDED_RECIPES_FAILURE
+    FETCH_RECIPES,
+    FETCH_RECIPES_SUCCESS,
+    FETCH_RECIPES_FAILURE,
+
+    REFRESH_RECIPES,
+    REFRESH_RECIPES_SUCCESS,
+    REFRESH_RECIPES_FAILURE
 } from '../actions/types';
 
 const INITIAL_STATE = {
-    loadingRecommendedRecipes: false,
-    recommendedRecipes: [],
-    popularRecipes: [],
+    loading: false,
+    refreshing: false,
+    recipes: []
 };
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case FETCH_RECOMMENDED_RECIPES:
-            return { ...state, loadingRecommendedRecipes: true };
-        case FETCH_RECOMMENDED_RECIPES_SUCCESS:
-            return { ...state, loadingRecommendedRecipes: false, recommendedRecipes: action.payload };
-        case FETCH_RECOMMENDED_RECIPES_FAILURE:
-            return { ...state, loadingRecommendedRecipes: false };
+        case FETCH_RECIPES:
+            return { ...state, loading: true };
+        case FETCH_RECIPES_SUCCESS:
+            return { ...state, loading: false, recipes: action.payload };
+        case FETCH_RECIPES_FAILURE:
+            return { ...state, loading: false };
+        case REFRESH_RECIPES:
+            return { ...state, refreshing: true };
+        case REFRESH_RECIPES_SUCCESS:
+            return { ...state, refreshing: false, recipes: action.payload };
+        case REFRESH_RECIPES_FAILURE:
+            return { ...state, refreshing: false };
         default:
             return state;
     }

@@ -1,36 +1,69 @@
 import {
-    FETCH_RECOMMENDED_RECIPES,
-    FETCH_RECOMMENDED_RECIPES_SUCCESS,
-    FETCH_RECOMMENDED_RECIPES_FAILURE
+    FETCH_RECIPES,
+    FETCH_RECIPES_SUCCESS,
+    FETCH_RECIPES_FAILURE,
+
+    REFRESH_RECIPES,
+    REFRESH_RECIPES_SUCCESS,
+    REFRESH_RECIPES_FAILURE
 } from './types';
 
 import { getRecommendedRecipes } from '../api/smakowity';
 
-export function fetchRecommendedRecipesRequest() {
+export function fetchRecipesRequest() {
     return {
-        type: FETCH_RECOMMENDED_RECIPES
+        type: FETCH_RECIPES
     };
 }
 
-export function fetchRecommendedRecipesSuccess(recipes) {
+export function fetchRecipesSuccess(recipes) {
     return {
-        type: FETCH_RECOMMENDED_RECIPES_SUCCESS,
+        type: FETCH_RECIPES_SUCCESS,
         payload: recipes
     };
 }
 
-export function fetchRecommendedRecipesFailure() {
+export function fetchRecipesFailure() {
     return {
-        type: FETCH_RECOMMENDED_RECIPES_FAILURE
+        type: FETCH_RECIPES_FAILURE
     }
 }
 
-export function fetchRecommendedRecipes() {
-    return dispatch => {
-        dispatch(fetchRecommendedRecipesRequest());
+export function refreshRecipesRequest() {
+    return {
+        type: REFRESH_RECIPES
+    }
+}
 
-        return getRecommendedRecipes()
-            .then(recipes => dispatch(fetchRecommendedRecipesSuccess(recipes)))
-            .catch(() => dispatch(fetchRecommendedRecipesFailure()))
+export function refreshRecipesSuccess(recipes) {
+    return {
+        type: REFRESH_RECIPES_SUCCESS,
+        payload: recipes
+    }
+}
+
+export function refreshRecipesFailure() {
+    return {
+        type: REFRESH_RECIPES_FAILURE
+    }
+}
+
+export function fetchRecommendedRecipes(limit, offset) {
+    return dispatch => {
+        dispatch(fetchRecipesRequest());
+
+        return getRecommendedRecipes(limit, offset)
+            .then(recipes => dispatch(fetchRecipesSuccess(recipes)))
+            .catch(() => dispatch(fetchRecipesFailure()))
+    }
+}
+
+export function refreshRecommendedRecipes(limit) {
+    return dispatch => {
+        dispatch(refreshRecipesRequest());
+
+        return getRecommendedRecipes(limit, 0)
+            .then(recipes => dispatch(refreshRecipesSuccess(recipes)))
+            .catch(() => dispatch(refreshRecipesFailure()))
     }
 }

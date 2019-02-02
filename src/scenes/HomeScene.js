@@ -9,7 +9,7 @@ import { Actions } from 'react-native-router-flux';
 import SearchHeader from '../components/common/SearchHeader';
 import TabBarIcon from '../components/common/TabBarIcon';
 import { connect } from 'react-redux';
-import { fetchRecommendedRecipes } from '../actions/RecipeActions';
+import { fetchRecommendedRecipes, refreshRecommendedRecipes } from '../actions/RecipeActions';
 import RecipeList from '../components/Recipe/RecipeList';
 import Colors from '../constants/Colors';
 
@@ -25,14 +25,36 @@ export class HomeScene extends React.Component {
       )
     };
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            limit: 15,
+            offset: 5,
+        }
+    }
+
     componentDidMount() {
-        this.props.fetchRecommendedRecipes();
+        this.props.fetchRecommendedRecipes(this.state.limit, this.state.offset);
+    }
+
+    _onRefresh() {
+        this.props.refreshRecommendedRecipes(this.state.limit, this.state.offset);
+
+    }
+
+    _onEndReached() {
+
     }
 
     render() {
         return (
             <View style={styles.container}>
-                <RecipeList recipes={this.props.recommendedRecipes} loading={this.props.loadingRecommendedRecipes} />
+                <RecipeList
+                    recipes={this.props.recipes}
+                    onRefresh={this._onRefresh.bind(this)}
+                    onEndReached={this._onEndReached.bind(this)}
+                />
             </View>
         );
     }
@@ -46,14 +68,15 @@ const styles = {
 
 const mapStateToProps = (state, ownProps) => {
     const reducer = state.RecipesReducer;
-    const { recommendedRecipes, loadingRecommendedRecipes } = reducer;
+    const { recipes, loading, refreshing } = reducer;
 
-    return { recommendedRecipes, loadingRecommendedRecipes };
+    return { recipes, loading, refreshing };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchRecommendedRecipes: () => dispatch(fetchRecommendedRecipes())
+        fetchRecommendedRecipes: (limit, offset) => dispatch(fetchRecommendedRecipes(limit, offset)),
+        refreshRecommendedRecipes: (limit, offset) => dispatch(refreshRecommendedRecipes(limit, offset)),
     }
 };
 

@@ -1,10 +1,10 @@
 const API_ENDPOINT = 'https://api.smakowity.pl/graphql';
 
-export function getRecommendedRecipes() {
+export function getRecommendedRecipes(limit, offset) {
   return doRequest(
       `
         {
-            recipes(limit: 15) {
+            recipes(limit: `+limit+`, offset: `+offset+`) {
                 id
                 name
                 img_url
