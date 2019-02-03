@@ -12,10 +12,13 @@ import { connect } from 'react-redux';
 import {
     fetchRecommendedRecipes,
     refreshRecommendedRecipes,
-    fetchMoreRecommendedRecipes
+    fetchMoreRecommendedRecipes,
+    getFavorites,
+    addFavorite
 } from '../actions/RecipeActions';
 import RecipeList from '../components/Recipe/RecipeList';
 import Colors from '../constants/Colors';
+import { AsyncStorage } from 'react-native';
 
 export class HomeScene extends React.Component {
     static navigationOptions = {
@@ -38,6 +41,10 @@ export class HomeScene extends React.Component {
             more_items: 5,
             max_items: 100
         }
+    }
+
+    componentWillMount() {
+        this.props.getFavorites();
     }
 
     componentDidMount() {
@@ -83,9 +90,9 @@ const styles = {
 
 const mapStateToProps = (state, ownProps) => {
     const reducer = state.RecipesReducer;
-    const { recipes, loading, refreshing } = reducer;
+    const { recipes, loading, refreshing, favorites } = reducer;
 
-    return { recipes, loading, refreshing };
+    return { recipes, loading, refreshing, favorites };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -93,6 +100,7 @@ const mapDispatchToProps = (dispatch) => {
         fetchRecommendedRecipes: (limit, offset) => dispatch(fetchRecommendedRecipes(limit, offset)),
         fetchMoreRecommendedRecipes: (limit, offset) => dispatch(fetchMoreRecommendedRecipes(limit, offset)),
         refreshRecommendedRecipes: (limit) => dispatch(refreshRecommendedRecipes(limit)),
+        getFavorites: () => dispatch(getFavorites()),
     }
 };
 

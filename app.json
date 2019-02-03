@@ -20,6 +20,8 @@
     },
     "assetBundlePatterns": [
       "**/*"
-    ],
+    ],"android": {
+      "package": "pl.smakowity"
+    }
   }
 }

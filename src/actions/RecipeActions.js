@@ -7,10 +7,15 @@ import {
     REFRESH_RECIPES_SUCCESS,
     REFRESH_RECIPES_FAILURE,
 
-    FETCH_MORE_RECIPES_SUCCESS
+    FETCH_MORE_RECIPES_SUCCESS,
+
+    GET_FAVORITES_SUCCESS,
+    FAVORITE_RECIPE,
+    UNFAVORITE_RECIPE
 } from './types';
 
 import { getRecommendedRecipes } from '../api/smakowity';
+import { AsyncStorage } from 'react-native';
 
 export function fetchRecipesRequest() {
     return {
@@ -57,6 +62,13 @@ export function fetchMoreRecipesSuccess(recipes) {
     }
 }
 
+export function getFavoritesSuccess(ids) {
+    return {
+        type: GET_FAVORITES_SUCCESS,
+        payload: ids
+    }
+}
+
 export function fetchRecommendedRecipes(limit, offset) {
     return dispatch => {
         dispatch(fetchRecipesRequest());
@@ -84,5 +96,38 @@ export function fetchMoreRecommendedRecipes(limit, offset) {
         return getRecommendedRecipes(limit, offset)
             .then(recipes => dispatch(fetchMoreRecipesSuccess(recipes)))
             .catch(() => dispatch(fetchRecipesFailure()));
+    }
+}
+
+export function addFavorite(id) {
+    return dispatch => {
+        AsyncStorage.getItem('favorites', (error, result) => {
+            if (result !== null) {
+                let newIds = JSON.parse(result).concat([id]);
+
+                // Remove duplicates
+                newIds = [ ...new Set(newIds) ];
+
+                AsyncStorage.setItem('favorites', JSON.stringify(newIds));
+            } else {
+                AsyncStorage.setItem('favorites', JSON.stringify([id]));
+            }
+        });
+    }
+}
+
+export function getFavorites() {
+    return async (dispatch) => {
+        let favorites = [];
+
+        try {
+            favorites = await AsyncStorage.getItem('favorites');
+
+            dispatch(getFavoritesSuccess(favorites));
+        } catch (error) {
+            console.log(error.message);
+        }
+
+        return favorites;
     }
 }

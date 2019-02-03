@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import RecipeItem from './RecipeItem';
 import Colors from '../../constants/Colors';
 
-class RecipeList extends React.Component {
+class RecipeList extends React.PureComponent {
 
     _keyExtractor = (item, index) => item.id.toString();
 
