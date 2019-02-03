@@ -69,6 +69,20 @@ export function getFavoritesSuccess(ids) {
     }
 }
 
+export function favoriteRecipe(id) {
+    return {
+        type: FAVORITE_RECIPE,
+        id: id
+    }
+}
+
+export function unfavoriteRecipe(id) {
+    return {
+        type: UNFAVORITE_RECIPE,
+        id: id
+    }
+}
+
 export function fetchRecommendedRecipes(limit, offset) {
     return dispatch => {
         dispatch(fetchRecipesRequest());
@@ -101,6 +115,8 @@ export function fetchMoreRecommendedRecipes(limit, offset) {
 
 export function addFavorite(id) {
     return dispatch => {
+        dispatch(favoriteRecipe(id));
+
         AsyncStorage.getItem('favorites', (error, result) => {
             if (result !== null) {
                 let newIds = JSON.parse(result).concat([id]);
@@ -116,12 +132,27 @@ export function addFavorite(id) {
     }
 }
 
+export function removeFavorite(id) {
+    return dispatch => {
+        dispatch(unfavoriteRecipe(id));
+
+        AsyncStorage.getItem('favorites', (error, result) => {
+            if (result !== null) {
+                let newIds = JSON.parse(result).filter(item => item !== id)
+
+                AsyncStorage.setItem('favorites', JSON.stringify(newIds));
+            }
+        });
+    }
+}
+
 export function getFavorites() {
     return async (dispatch) => {
         let favorites = [];
 
         try {
             favorites = await AsyncStorage.getItem('favorites');
+            favorites = JSON.parse(favorites);
 
             dispatch(getFavoritesSuccess(favorites));
         } catch (error) {

@@ -1,27 +1,61 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
 import { Icon } from 'expo';
 import Colors from '../../constants/Colors';
+import {
+    addFavorite,
+    removeFavorite
+} from '../../actions/RecipeActions';
 
-const RecipeBox = (props) => {
-    return (
-        <View style={[styles.container, {marginTop: props.index == 0 ? 0 : 8}]}>
-            <View style={styles.imageWrapper}>
-                <Image style={styles.image} source={{uri: props.recipe.img_url}} resizeMode="cover" />
-                <View style={styles.favContainer}>
-                    <Icon.Ionicons
-                        style={styles.favIcon}
-                        name={'md-heart'}
-                        size={24}
-                        color="#fff"
-                     />
+class RecipeItem extends React.PureComponent {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isFavorited: false
+        }
+    }
+
+    componentWillMount() {
+        this.setState({
+            isFavorited: this.props.favorites.indexOf(this.props.recipe.id) > -1
+        });
+    }
+
+    _handleFavoritePress() {
+        if ( ! this.state.isFavorited) {
+            this.props.addFavorite(this.props.recipe.id);
+            this.setState({isFavorited: true});
+        } else {
+            this.props.removeFavorite(this.props.recipe.id);
+            this.setState({isFavorited: false});
+        }
+    }
+
+    render() {
+        return (
+            <View style={[styles.container, {marginTop: this.props.index == 0 ? 0 : 8}]}>
+                <View style={styles.imageWrapper}>
+                    <Image style={styles.image} source={{uri: this.props.recipe.img_url}} resizeMode="cover" />
+                    <TouchableOpacity
+                        style={{ ...styles.favContainer, ...{ backgroundColor: (this.state.isFavorited ? Colors.redColor : 'rgba(255, 255, 255, 0.3)') } }}
+                        onPress={this._handleFavoritePress.bind(this)}
+                    >
+                        <Icon.Ionicons
+                            style={styles.favIcon}
+                            name={'md-heart'}
+                            size={24}
+                            color={'#fff'}
+                         />
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.detailsContainer}>
+                    <Text style={styles.recipeName} numberOfLines={1} ellipsizeMode="tail">{this.props.recipe.name}</Text>
                 </View>
             </View>
-            <View style={styles.detailsContainer}>
-                <Text style={styles.recipeName} numberOfLines={1} ellipsizeMode="tail">{props.recipe.name}</Text>
-            </View>
-        </View>
-    );
+        );
+    }
 };
 
 const styles = {
@@ -61,18 +95,36 @@ const styles = {
         position: 'absolute',
         top: 8,
         right: 8,
-        elevation: 0
     },
     favIcon: {
         marginTop: 3,
     },
     detailsContainer: {
-        padding: 10,
-        paddingBottom: 13
+        flex: 1,
+        height: 40,
+        paddingHorizontal: 10,
+        jusifyContent: 'flex-start',
+        alignItems: 'flex-start',
+
     },
     recipeName: {
+        paddingTop: 6,
         fontSize: 18
     }
 }
 
-export default RecipeBox;
+const mapStateToProps = (state, ownProps) => {
+    const reducer = state.RecipesReducer;
+    const { favorites } = reducer;
+
+    return { favorites };
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addFavorite: (id) => dispatch(addFavorite(id)),
+        removeFavorite: (id) => dispatch(removeFavorite(id)),
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RecipeItem);

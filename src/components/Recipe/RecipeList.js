@@ -3,8 +3,15 @@ import { ActivityIndicator, ScrollView, View, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import RecipeItem from './RecipeItem';
 import Colors from '../../constants/Colors';
+import {
+    getFavorites,
+} from '../../actions/RecipeActions';
 
 class RecipeList extends React.PureComponent {
+
+    componentWillMount() {
+        this.props.getFavorites();
+    }
 
     _keyExtractor = (item, index) => item.id.toString();
 
@@ -59,4 +66,10 @@ const styles = {
     }
 }
 
-export default RecipeList;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getFavorites: () => dispatch(getFavorites()),
+    }
+};
+
+export default connect(null, mapDispatchToProps)(RecipeList);

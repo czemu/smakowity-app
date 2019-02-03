@@ -42,8 +42,6 @@ export default (state = INITIAL_STATE, action) => {
 
         case GET_FAVORITES_SUCCESS:
             return { ...state, favorites: action.payload };
-        case FAVORITE_RECIPE:
-            return { ...state, favorites: [...state.favorites, ...action.id] };
 
         default:
             return state;

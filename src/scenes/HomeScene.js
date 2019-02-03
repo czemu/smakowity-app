@@ -13,8 +13,6 @@ import {
     fetchRecommendedRecipes,
     refreshRecommendedRecipes,
     fetchMoreRecommendedRecipes,
-    getFavorites,
-    addFavorite
 } from '../actions/RecipeActions';
 import RecipeList from '../components/Recipe/RecipeList';
 import Colors from '../constants/Colors';
@@ -41,10 +39,6 @@ export class HomeScene extends React.Component {
             more_items: 5,
             max_items: 100
         }
-    }
-
-    componentWillMount() {
-        this.props.getFavorites();
     }
 
     componentDidMount() {
@@ -90,17 +84,16 @@ const styles = {
 
 const mapStateToProps = (state, ownProps) => {
     const reducer = state.RecipesReducer;
-    const { recipes, loading, refreshing, favorites } = reducer;
+    const { recipes, loading, refreshing } = reducer;
 
-    return { recipes, loading, refreshing, favorites };
+    return { recipes, loading, refreshing };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         fetchRecommendedRecipes: (limit, offset) => dispatch(fetchRecommendedRecipes(limit, offset)),
         fetchMoreRecommendedRecipes: (limit, offset) => dispatch(fetchMoreRecommendedRecipes(limit, offset)),
-        refreshRecommendedRecipes: (limit) => dispatch(refreshRecommendedRecipes(limit)),
-        getFavorites: () => dispatch(getFavorites()),
+        refreshRecommendedRecipes: (limit) => dispatch(refreshRecommendedRecipes(limit))
     }
 };
 
