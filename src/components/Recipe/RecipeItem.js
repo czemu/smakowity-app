@@ -18,9 +18,11 @@ class RecipeItem extends React.PureComponent {
     }
 
     componentWillMount() {
-        this.setState({
-            isFavorited: this.props.favorites.indexOf(this.props.recipe.id) > -1
-        });
+        if (this.props.favoriteIds !== null) {
+            this.setState({
+                isFavorited: this.props.favoriteIds.indexOf(this.props.recipe.id) > -1
+            });
+        }
     }
 
     _handleFavoritePress() {
@@ -115,9 +117,9 @@ const styles = {
 
 const mapStateToProps = (state, ownProps) => {
     const reducer = state.RecipesReducer;
-    const { favorites } = reducer;
+    const { favoriteIds } = reducer;
 
-    return { favorites };
+    return { favoriteIds };
 }
 
 const mapDispatchToProps = (dispatch) => {

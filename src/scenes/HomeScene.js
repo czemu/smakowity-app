@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     Image,
-    ScrollView,
     Text,
     View,
 } from 'react-native';
@@ -15,8 +14,6 @@ import {
     fetchMoreRecommendedRecipes,
 } from '../actions/RecipeActions';
 import RecipeList from '../components/Recipe/RecipeList';
-import Colors from '../constants/Colors';
-import { AsyncStorage } from 'react-native';
 
 export class HomeScene extends React.Component {
     static navigationOptions = {
@@ -27,8 +24,8 @@ export class HomeScene extends React.Component {
             focused={focused}
             name={'md-home'}
           />
-      )
-    };
+      ),
+     };
 
     constructor(props) {
         super(props);
@@ -53,7 +50,7 @@ export class HomeScene extends React.Component {
     }
 
     _onEndReached() {
-        if ( ! this.props.loading && ! this.props.refreshing && (this.state.offset + this.state.more_items) <= this.state.max_items) {
+        if ( ! this.props.loadingRecommended && ! this.props.refreshingRecommended && (this.state.offset + this.state.more_items) <= this.state.max_items) {
             this.setState({offset: this.state.offset + this.state.more_items});
             this.props.fetchMoreRecommendedRecipes(this.state.more_items, this.state.offset);
         }
@@ -63,9 +60,9 @@ export class HomeScene extends React.Component {
         return (
             <View style={styles.container}>
                 <RecipeList
-                    loading={this.props.loading}
-                    refreshing={this.props.refreshing}
-                    recipes={this.props.recipes}
+                    loading={this.props.loadingRecommended}
+                    refreshing={this.props.refreshingRecommended}
+                    recipes={this.props.recommendedRecipes}
                     onRefresh={this._onRefresh.bind(this)}
                     onEndReached={this._onEndReached.bind(this)}
                     initialNumToRender={this.state.limit}
@@ -84,9 +81,9 @@ const styles = {
 
 const mapStateToProps = (state, ownProps) => {
     const reducer = state.RecipesReducer;
-    const { recipes, loading, refreshing } = reducer;
+    const { recommendedRecipes, loadingRecommended, refreshingRecommended } = reducer;
 
-    return { recipes, loading, refreshing };
+    return { recommendedRecipes, loadingRecommended, refreshingRecommended };
 };
 
 const mapDispatchToProps = (dispatch) => {

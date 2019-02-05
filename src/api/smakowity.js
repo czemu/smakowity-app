@@ -18,6 +18,24 @@ export function getRecommendedRecipes(limit, offset) {
     });
 }
 
+export function getRecipesById(recipeIds, limit, offset) {
+  return doRequest(
+      `
+        {
+            recipes(ids: [`+recipeIds.join(',')+`], limit: `+limit+`, offset: `+offset+`) {
+                id
+                name
+                img_url
+            }
+        }
+      `
+  )
+    .then(recipes => recipes.json())
+    .then(recipes => {
+        return recipes.data.recipes;
+    });
+}
+
 function doRequest(query) {
     return fetch(API_ENDPOINT, {
         method: 'POST',

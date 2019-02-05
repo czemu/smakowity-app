@@ -1,8 +1,16 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import TabBarIcon from '../components/common/TabBarIcon';
+import { connect } from 'react-redux';
+import {
+    fetchFavoritedRecipes,
+    fetchMoreFavoritedRecipes,
+    refreshFavoritedRecipes,
+    getFavorites
+} from '../actions/RecipeActions';
+import RecipeList from '../components/Recipe/RecipeList';
 
-export default class FavoritesScene extends React.Component {
+class FavoritesScene extends React.Component {
     static navigationOptions = {
         title: 'Ulubione przepisy',
         tabBarLabel: 'Ulubione',
@@ -14,19 +22,73 @@ export default class FavoritesScene extends React.Component {
         )
     };
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            limit: 10,
+            offset: 0,
+            more_items: 5,
+            max_items: 100
+        }
+    }
+
+    componentDidMount() {
+        this.setState({offset: this.state.limit});
+        this.props.getFavorites();
+        this.props.fetchFavoritedRecipes(this.props.favoriteIds, this.state.limit, 0);
+    }
+
+    _onRefresh() {
+        this.setState({offset: this.state.limit});
+        this.props.refreshFavoritedRecipes(this.props.favoriteIds, this.state.limit);
+
+    }
+
+    _onEndReached() {
+        if ( ! this.props.loadingFavorited && ! this.props.refreshingFavorited && (this.state.offset + this.state.more_items) <= this.state.max_items) {
+            this.setState({offset: this.state.offset + this.state.more_items});
+            this.props.fetchMoreFavoritedRecipes(this.props.favoriteIds, this.state.more_items, this.state.offset);
+        }
+    }
+
     render() {
         return (
-            <ScrollView style={styles.container}>
-                <Text>Ulubione</Text>
-            </ScrollView>
+            <View style={styles.container}>
+                <RecipeList
+                    loading={this.props.loadingFavorited}
+                    refreshing={this.props.refreshingFavorited}
+                    recipes={this.props.favoritedRecipes}
+                    onRefresh={this._onRefresh.bind(this)}
+                    onEndReached={this._onEndReached.bind(this)}
+                    initialNumToRender={this.state.limit}
+                    onEndReachedThreshold={1}
+                />
+            </View>
         );
     }
 }
 
-const styles = StyleSheet.create({
+const styles = {
     container: {
         flex: 1,
-        paddingTop: 15,
-        backgroundColor: '#fff',
     },
-});
+};
+
+const mapStateToProps = (state, ownProps) => {
+    const reducer = state.RecipesReducer;
+    const { favoriteIds, favoritedRecipes, loadingFavorited, refreshingFavorited } = reducer;
+
+    return { favoriteIds, favoritedRecipes, loadingFavorited, refreshingFavorited };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchFavoritedRecipes: (recipeIds, limit, offset) => dispatch(fetchFavoritedRecipes(recipeIds, limit, offset)),
+        fetchMoreFavoritedRecipes: (recipeIds, limit, offset) => dispatch(fetchMoreFavoritedRecipes(recipeIds, limit, offset)),
+        refreshFavoritedRecipes: (recipeIds, limit) => dispatch(refreshFavoritedRecipes(recipeIds, limit)),
+        getFavorites: () => dispatch(getFavorites()),
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FavoritesScene);
