@@ -21,7 +21,9 @@ import {
 
     FETCH_MORE_FAVORITED_RECIPES_SUCCESS,
     FAVORITE_RECIPE,
-    UNFAVORITE_RECIPE
+    UNFAVORITE_RECIPE,
+
+    UPDATE_FAVORITE_STATUS
 } from './types';
 
 import {
@@ -75,12 +77,21 @@ export function fetchMoreRecommendedRecipesSuccess(recipes) {
     }
 }
 
+export function updateFavoriteStatus() {
+    return {
+        type: UPDATE_FAVORITE_STATUS
+    }
+}
+
 export function fetchRecommendedRecipes(limit, offset) {
     return dispatch => {
         dispatch(fetchRecommendedRecipesRequest());
 
         return getRecommendedRecipes(limit, offset)
-            .then(recipes => dispatch(fetchRecommendedRecipesSuccess(recipes)))
+            .then(recipes => {
+                dispatch(fetchRecommendedRecipesSuccess(recipes));
+                dispatch(updateFavoriteStatus());
+            })
             .catch(() => dispatch(fetchRecommendedRecipesFailure()))
     }
 }
@@ -162,6 +173,7 @@ export function fetchFavoritedRecipes(recipeIds, limit, offset) {
 
 export function refreshFavoritedRecipes(recipeIds, limit) {
     return dispatch => {
+        dispatch(getFavorites());
         dispatch(refreshFavoritedRecipesRequest());
 
         return getRecipesById(recipeIds, limit, 0)
@@ -216,6 +228,8 @@ export function addFavorite(id) {
             } else {
                 AsyncStorage.setItem('favorites', JSON.stringify([id]));
             }
+
+            dispatch(getFavorites());
         });
     }
 }
@@ -241,6 +255,7 @@ export function getFavorites() {
         try {
             favoriteIds = await AsyncStorage.getItem('favorites');
             favoriteIds = JSON.parse(favoriteIds);
+            favoriteIds = favoriteIds.reverse();
 
             dispatch(getFavoritesSuccess(favoriteIds));
         } catch (error) {

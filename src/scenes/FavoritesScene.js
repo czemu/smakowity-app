@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import TabBarIcon from '../components/common/TabBarIcon';
+import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import {
     fetchFavoritedRecipes,
@@ -60,9 +61,10 @@ class FavoritesScene extends React.Component {
                     refreshing={this.props.refreshingFavorited}
                     recipes={this.props.favoritedRecipes}
                     onRefresh={this._onRefresh.bind(this)}
-                    onEndReached={this._onEndReached.bind(this)}
+                    // onEndReached={this._onEndReached.bind(this)}
                     initialNumToRender={this.state.limit}
                     onEndReachedThreshold={1}
+                    removeOnUnfavorite={true}
                 />
             </View>
         );

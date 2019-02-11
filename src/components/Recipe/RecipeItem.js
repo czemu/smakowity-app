@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Animated } from 'react-native';
 import { connect } from 'react-redux';
 import { Icon } from 'expo';
 import Colors from '../../constants/Colors';
@@ -13,35 +13,32 @@ class RecipeItem extends React.PureComponent {
         super(props);
 
         this.state = {
-            isFavorited: false
+            animationValue: new Animated.Value(0)
         }
     }
 
-    componentWillMount() {
-        if (this.props.favoriteIds !== null) {
-            this.setState({
-                isFavorited: this.props.favoriteIds.indexOf(this.props.recipe.id) > -1
-            });
-        }
+    componentDidMount() {
+        Animated.timing(this.state.animationValue, {
+          toValue: 1,
+          duration : 400,
+        }).start();
     }
 
     _handleFavoritePress() {
-        if ( ! this.state.isFavorited) {
+        if ( ! this.props.isFavorited) {
             this.props.addFavorite(this.props.recipe.id);
-            this.setState({isFavorited: true});
         } else {
             this.props.removeFavorite(this.props.recipe.id);
-            this.setState({isFavorited: false});
         }
     }
 
     render() {
         return (
-            <View style={[styles.container, {marginTop: this.props.index == 0 ? 0 : 8}]}>
+            <Animated.View style={[styles.container, {marginTop: this.props.index == 0 ? 0 : 8, opacity: this.state.animationValue}]}>
                 <View style={styles.imageWrapper}>
                     <Image style={styles.image} source={{uri: this.props.recipe.img_url}} resizeMode="cover" />
                     <TouchableOpacity
-                        style={{ ...styles.favContainer, ...{ backgroundColor: (this.state.isFavorited ? Colors.redColor : 'rgba(255, 255, 255, 0.3)') } }}
+                        style={{ ...styles.favContainer, ...{ backgroundColor: (this.props.isFavorited ? Colors.redColor : 'rgba(255, 255, 255, 0.3)') } }}
                         onPress={this._handleFavoritePress.bind(this)}
                     >
                         <Icon.Ionicons
@@ -55,7 +52,7 @@ class RecipeItem extends React.PureComponent {
                 <View style={styles.detailsContainer}>
                     <Text style={styles.recipeName} numberOfLines={1} ellipsizeMode="tail">{this.props.recipe.name}</Text>
                 </View>
-            </View>
+            </Animated.View>
         );
     }
 };
@@ -70,7 +67,7 @@ const styles = {
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.3,
         shadowRadius: 4,
-        elevation: 1
+        elevation: 1,
     },
     imageWrapper: {
         height: 150,
@@ -119,7 +116,9 @@ const mapStateToProps = (state, ownProps) => {
     const reducer = state.RecipesReducer;
     const { favoriteIds } = reducer;
 
-    return { favoriteIds };
+    const isFavorited = favoriteIds.indexOf(ownProps.recipe.id) > -1;
+
+    return { favoriteIds, isFavorited };
 }
 
 const mapDispatchToProps = (dispatch) => {

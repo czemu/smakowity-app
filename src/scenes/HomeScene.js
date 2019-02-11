@@ -12,6 +12,7 @@ import {
     fetchRecommendedRecipes,
     refreshRecommendedRecipes,
     fetchMoreRecommendedRecipes,
+    updateFavoriteStatus,
 } from '../actions/RecipeActions';
 import RecipeList from '../components/Recipe/RecipeList';
 
@@ -46,7 +47,6 @@ export class HomeScene extends React.Component {
     _onRefresh() {
         this.setState({offset: this.state.limit});
         this.props.refreshRecommendedRecipes(this.state.limit);
-
     }
 
     _onEndReached() {
@@ -60,13 +60,13 @@ export class HomeScene extends React.Component {
         return (
             <View style={styles.container}>
                 <RecipeList
-                    loading={this.props.loadingRecommended}
-                    refreshing={this.props.refreshingRecommended}
-                    recipes={this.props.recommendedRecipes}
-                    onRefresh={this._onRefresh.bind(this)}
-                    onEndReached={this._onEndReached.bind(this)}
-                    initialNumToRender={this.state.limit}
-                    onEndReachedThreshold={1}
+                loading={this.props.loadingRecommended}
+                refreshing={this.props.refreshingRecommended}
+                recipes={this.props.recommendedRecipes}
+                onRefresh={this._onRefresh.bind(this)}
+                onEndReached={this._onEndReached.bind(this)}
+                initialNumToRender={this.state.limit}
+                onEndReachedThreshold={1}
                 />
             </View>
         );
@@ -90,7 +90,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         fetchRecommendedRecipes: (limit, offset) => dispatch(fetchRecommendedRecipes(limit, offset)),
         fetchMoreRecommendedRecipes: (limit, offset) => dispatch(fetchMoreRecommendedRecipes(limit, offset)),
-        refreshRecommendedRecipes: (limit) => dispatch(refreshRecommendedRecipes(limit))
+        refreshRecommendedRecipes: (limit) => dispatch(refreshRecommendedRecipes(limit)),
+        updateFavoriteStatus: () => dispatch(updateFavoriteStatus())
     }
 };
 

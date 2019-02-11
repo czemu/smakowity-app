@@ -22,7 +22,8 @@ import {
     FETCH_MORE_FAVORITED_RECIPES_SUCCESS,
 
     FAVORITE_RECIPE,
-    UNFAVORITE_RECIPE
+    UNFAVORITE_RECIPE,
+    UPDATE_FAVORITE_STATUS
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -52,7 +53,11 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, refreshingRecommended: false };
 
         case FETCH_MORE_RECOMMENDED_RECIPES_SUCCESS:
-            return { ...state, loadingRecommended: false, recommendedRecipes: [...state.recommendedRecipes, ...action.payload] };
+            return {
+                ...state,
+                loadingRecommended: false,
+                recommendedRecipes: [...state.recommendedRecipes, ...action.payload]
+            };
 
         case GET_FAVORITED_SUCCESS:
             return { ...state, favoriteIds: action.payload };
@@ -72,7 +77,39 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, refreshingFavorited: false };
 
         case FETCH_MORE_FAVORITED_RECIPES_SUCCESS:
-            return { ...state, loadingFavorited: false, favoritedRecipes: [...state.favoritedRecipes, ...action.payload] };
+            return {
+                ...state,
+                loadingFavorited: false,
+                favoritedRecipes: [...state.favoritedRecipes, ...action.payload]
+            };
+
+        case FAVORITE_RECIPE:
+            return {
+                ...state,
+                favoriteIds: [action.id, ...state.favoriteIds]
+            };
+
+        case UNFAVORITE_RECIPE:
+            return {
+                ...state,
+                favoriteIds: [...state.favoriteIds.filter(id => id !== action.id)],
+                favoritedRecipes: [...state.favoritedRecipes.filter(recipe => recipe.id !== action.id)]
+            };
+
+        case UPDATE_FAVORITE_STATUS:
+            return {
+                ...state,
+                recommendedRecipes: [...state.recommendedRecipes.map(recipe => {
+                    recipe.isFavorited = state.favoriteIds.indexOf(recipe.id) > -1;
+
+                    return recipe;
+                })],
+                favoritedRecipes: [...state.favoritedRecipes.map(recipe => {
+                    recipe.isFavorited = state.favoriteIds.indexOf(recipe.id) > -1;
+
+                    return recipe;
+                })]
+            };
 
         default:
             return state;

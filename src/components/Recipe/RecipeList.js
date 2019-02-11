@@ -8,7 +8,6 @@ import {
 } from '../../actions/RecipeActions';
 
 class RecipeList extends React.PureComponent {
-
     componentWillMount() {
         this.props.getFavorites();
     }
@@ -16,13 +15,16 @@ class RecipeList extends React.PureComponent {
     _keyExtractor = (item, index) => item.id.toString();
 
     _renderItem({item}) {
-        return <RecipeItem recipe={item} />
+        return <RecipeItem
+            recipe={item}
+            removeOnUnfavorite={this.props.removeOnUnfavorite}
+        />
     }
 
     _renderFooter() {
         if (this.props.loading) {
             return (
-                <View style={{paddingVertical: 20}}>
+                <View style={styles.indicatorContainer}>
                     <ActivityIndicator size="large" color={Colors.redColor} style={styles.indicator} />
                 </View>
             );
@@ -36,7 +38,7 @@ class RecipeList extends React.PureComponent {
             <View style={styles.container}>
                 <FlatList
                     data={this.props.recipes}
-                    renderItem={this._renderItem}
+                    renderItem={this._renderItem.bind(this)}
                     keyExtractor={this._keyExtractor}
                     style={styles.container}
                     contentContainerStyle={{paddingHorizontal: 8, paddingBottom: 8}}
@@ -51,11 +53,8 @@ class RecipeList extends React.PureComponent {
 };
 
 const styles = {
-    container: {
-        flex: 1,
-    },
-
     indicatorContainer: {
+        paddingVertical: 20,
         flex: 1,
         alignItems: 'center',
         jusifyContent: 'center'
