@@ -9,11 +9,15 @@ import {
 
     FETCH_MORE_RECOMMENDED_RECIPES_SUCCESS,
 
-    GET_FAVORITED_SUCCESS,
+    GET_FAVORITE_IDS_SUCCESS,
 
     FETCH_FAVORITED_RECIPES,
     FETCH_FAVORITED_RECIPES_SUCCESS,
     FETCH_FAVORITED_RECIPES_FAILURE,
+
+    FETCH_NEW_FAVORITED_RECIPE,
+    FETCH_NEW_FAVORITED_RECIPE_SUCCESS,
+    FETCH_NEW_FAVORITED_RECIPE_FAILURE,
 
     REFRESH_FAVORITED_RECIPES,
     REFRESH_FAVORITED_RECIPES_SUCCESS,
@@ -135,6 +139,25 @@ export function fetchFavoritedRecipesFailure() {
     }
 }
 
+export function fetchNewFavoritedRecipeRequest() {
+    return {
+        type: FETCH_NEW_FAVORITED_RECIPE
+    };
+}
+
+export function fetchNewFavoritedRecipeSuccess(recipe) {
+    return {
+        type: FETCH_NEW_FAVORITED_RECIPE_SUCCESS,
+        payload: recipe
+    }
+}
+
+export function fetchNewFavoritedRecipeFailure() {
+    return {
+        type: FETCH_NEW_FAVORITED_RECIPE_FAILURE
+    };
+}
+
 export function refreshFavoritedRecipesRequest() {
     return {
         type: REFRESH_FAVORITED_RECIPES
@@ -173,7 +196,7 @@ export function fetchFavoritedRecipes(recipeIds, limit, offset) {
 
 export function refreshFavoritedRecipes(recipeIds, limit) {
     return dispatch => {
-        dispatch(getFavorites());
+        dispatch(getFavoriteIds());
         dispatch(refreshFavoritedRecipesRequest());
 
         return getRecipesById(recipeIds, limit, 0)
@@ -192,9 +215,19 @@ export function fetchMoreFavoritedRecipes(recipeIds, limit, offset) {
     }
 }
 
-export function getFavoritesSuccess(ids) {
+export function fetchNewFavoriteRecipe(recipeId) {
+    return dispatch => {
+        dispatch(fetchNewFavoritedRecipeRequest());
+
+        return getRecipesById([recipeId], 1, 0)
+            .then(recipes => dispatch(fetchNewFavoritedRecipeSuccess(recipes)))
+            .catch(() => dispatch(fetchNewFavoritedRecipeFailure()))
+    }
+}
+
+export function getFavoriteIdsSuccess(ids) {
     return {
-        type: GET_FAVORITED_SUCCESS,
+        type: GET_FAVORITE_IDS_SUCCESS,
         payload: ids
     }
 }
@@ -229,7 +262,8 @@ export function addFavorite(id) {
                 AsyncStorage.setItem('favorites', JSON.stringify([id]));
             }
 
-            dispatch(getFavorites());
+            dispatch(getFavoriteIds());
+            dispatch(fetchNewFavoriteRecipe(id));
         });
     }
 }
@@ -248,7 +282,7 @@ export function removeFavorite(id) {
     }
 }
 
-export function getFavorites() {
+export function getFavoriteIds() {
     return async (dispatch) => {
         let favoriteIds = [];
 
@@ -257,7 +291,7 @@ export function getFavorites() {
             favoriteIds = JSON.parse(favoriteIds);
             favoriteIds = favoriteIds.reverse();
 
-            dispatch(getFavoritesSuccess(favoriteIds));
+            dispatch(getFavoriteIdsSuccess(favoriteIds));
         } catch (error) {
             console.log(error.message);
         }

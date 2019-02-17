@@ -7,7 +7,7 @@ import {
     fetchFavoritedRecipes,
     fetchMoreFavoritedRecipes,
     refreshFavoritedRecipes,
-    getFavorites
+    getFavoriteIds
 } from '../actions/RecipeActions';
 import RecipeList from '../components/Recipe/RecipeList';
 
@@ -36,7 +36,7 @@ class FavoritesScene extends React.Component {
 
     componentDidMount() {
         this.setState({offset: this.state.limit});
-        this.props.getFavorites();
+        this.props.getFavoriteIds();
         this.props.fetchFavoritedRecipes(this.props.favoriteIds, this.state.limit, 0);
     }
 
@@ -89,7 +89,7 @@ const mapDispatchToProps = (dispatch) => {
         fetchFavoritedRecipes: (recipeIds, limit, offset) => dispatch(fetchFavoritedRecipes(recipeIds, limit, offset)),
         fetchMoreFavoritedRecipes: (recipeIds, limit, offset) => dispatch(fetchMoreFavoritedRecipes(recipeIds, limit, offset)),
         refreshFavoritedRecipes: (recipeIds, limit) => dispatch(refreshFavoritedRecipes(recipeIds, limit)),
-        getFavorites: () => dispatch(getFavorites()),
+        getFavoriteIds: () => dispatch(getFavoriteIds()),
     }
 };
 

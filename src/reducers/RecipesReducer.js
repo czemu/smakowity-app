@@ -9,11 +9,15 @@ import {
 
     FETCH_MORE_RECOMMENDED_RECIPES_SUCCESS,
 
-    GET_FAVORITED_SUCCESS,
+    GET_FAVORITE_IDS_SUCCESS,
 
     FETCH_FAVORITED_RECIPES,
     FETCH_FAVORITED_RECIPES_SUCCESS,
     FETCH_FAVORITED_RECIPES_FAILURE,
+
+    FETCH_NEW_FAVORITED_RECIPE,
+    FETCH_NEW_FAVORITED_RECIPE_SUCCESS,
+    FETCH_NEW_FAVORITED_RECIPE_FAILURE,
 
     REFRESH_FAVORITED_RECIPES,
     REFRESH_FAVORITED_RECIPES_SUCCESS,
@@ -59,7 +63,7 @@ export default (state = INITIAL_STATE, action) => {
                 recommendedRecipes: [...state.recommendedRecipes, ...action.payload]
             };
 
-        case GET_FAVORITED_SUCCESS:
+        case GET_FAVORITE_IDS_SUCCESS:
             return { ...state, favoriteIds: action.payload };
 
         case FETCH_FAVORITED_RECIPES:
@@ -67,6 +71,17 @@ export default (state = INITIAL_STATE, action) => {
         case FETCH_FAVORITED_RECIPES_SUCCESS:
             return { ...state, loadingFavorited: false, favoritedRecipes: action.payload };
         case FETCH_FAVORITED_RECIPES_FAILURE:
+            return { ...state, loadingFavorited: false };
+
+        case FETCH_NEW_FAVORITED_RECIPE:
+            return { ...state, loadingFavorited: true };
+        case FETCH_NEW_FAVORITED_RECIPE_SUCCESS:
+            return {
+                ...state,
+                loadingFavorited: false,
+                favoritedRecipes: [ ...action.payload, ...state.favoritedRecipes ]
+            };
+        case FETCH_NEW_FAVORITED_RECIPE_FAILURE:
             return { ...state, loadingFavorited: false };
 
         case REFRESH_FAVORITED_RECIPES:

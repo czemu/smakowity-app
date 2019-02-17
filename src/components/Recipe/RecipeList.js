@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 import RecipeItem from './RecipeItem';
 import Colors from '../../constants/Colors';
 import {
-    getFavorites,
+    getFavoriteIds,
 } from '../../actions/RecipeActions';
 
 class RecipeList extends React.PureComponent {
     componentWillMount() {
-        this.props.getFavorites();
+        this.props.getFavoriteIds();
     }
 
     _keyExtractor = (item, index) => item.id.toString();
@@ -67,7 +67,7 @@ const styles = {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getFavorites: () => dispatch(getFavorites()),
+        getFavoriteIds: () => dispatch(getFavoriteIds()),
     }
 };
 
