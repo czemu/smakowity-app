@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, Animated } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import { Icon } from 'expo';
 import Colors from '../../constants/Colors';
@@ -49,9 +50,9 @@ class RecipeItem extends React.PureComponent {
                          />
                     </TouchableOpacity>
                 </View>
-                <View style={styles.detailsContainer}>
+                <TouchableOpacity style={styles.detailsContainer}>
                     <Text style={styles.recipeName} numberOfLines={1} ellipsizeMode="tail">{this.props.recipe.name}</Text>
-                </View>
+                </TouchableOpacity>
             </Animated.View>
         );
     }

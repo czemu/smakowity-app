@@ -69,7 +69,7 @@ export default (state = INITIAL_STATE, action) => {
         case FETCH_FAVORITED_RECIPES:
             return { ...state, loadingFavorited: true };
         case FETCH_FAVORITED_RECIPES_SUCCESS:
-            return { ...state, loadingFavorited: false, favoritedRecipes: action.payload };
+            return { ...state, loadingFavorited: false, favoritedRecipes: action.payload !== null ? action.payload : []};
         case FETCH_FAVORITED_RECIPES_FAILURE:
             return { ...state, loadingFavorited: false };
 
@@ -87,7 +87,7 @@ export default (state = INITIAL_STATE, action) => {
         case REFRESH_FAVORITED_RECIPES:
             return { ...state, refreshingFavorited: true };
         case REFRESH_FAVORITED_RECIPES_SUCCESS:
-            return { ...state, refreshingFavorited: false, favoritedRecipes: action.payload };
+            return { ...state, refreshingFavorited: false, favoritedRecipes: action.payload !== null ? action.payload : [] };
         case REFRESH_FAVORITED_RECIPES_FAILURE:
             return { ...state, refreshingFavorited: false };
 

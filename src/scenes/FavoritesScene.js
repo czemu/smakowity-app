@@ -61,7 +61,7 @@ class FavoritesScene extends React.Component {
                     refreshing={this.props.refreshingFavorited}
                     recipes={this.props.favoritedRecipes}
                     onRefresh={this._onRefresh.bind(this)}
-                    // onEndReached={this._onEndReached.bind(this)}
+                    onEndReached={this._onEndReached.bind(this)}
                     initialNumToRender={this.state.limit}
                     onEndReachedThreshold={1}
                     removeOnUnfavorite={true}
