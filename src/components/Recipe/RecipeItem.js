@@ -36,7 +36,10 @@ class RecipeItem extends React.PureComponent {
     render() {
         return (
             <Animated.View style={[styles.container, {marginTop: this.props.index == 0 ? 0 : 8, opacity: this.state.animationValue}]}>
-                <View style={styles.imageWrapper}>
+                <TouchableOpacity
+                    style={styles.imageWrapper}
+                    onPress={() => Actions.recipe({recipeId: this.props.recipe.id})}
+                >
                     <Image style={styles.image} source={{uri: this.props.recipe.img_url}} resizeMode="cover" />
                     <TouchableOpacity
                         style={{ ...styles.favContainer, ...{ backgroundColor: (this.props.isFavorited ? Colors.redColor : 'rgba(255, 255, 255, 0.3)') } }}
@@ -49,8 +52,11 @@ class RecipeItem extends React.PureComponent {
                             color={'#fff'}
                          />
                     </TouchableOpacity>
-                </View>
-                <TouchableOpacity style={styles.detailsContainer}>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.detailsContainer}
+                    onPress={() => Actions.recipe({recipeId: this.props.recipe.id})}
+                >
                     <Text style={styles.recipeName} numberOfLines={1} ellipsizeMode="tail">{this.props.recipe.name}</Text>
                 </TouchableOpacity>
             </Animated.View>

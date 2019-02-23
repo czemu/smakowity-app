@@ -1,19 +1,29 @@
 import React from 'react';
 import { ActivityIndicator, ScrollView, View, Text } from 'react-native';
 import { connect } from 'react-redux';
-// import {
-//     getRecipesById,
-// } from '../actions/RecipeActions';
+import {
+    fetchRecipe,
+} from '../actions/RecipeActions';
 
 class RecipeScene extends React.PureComponent {
+    constructor(props) {
+        super(props);
+    }
+
+    static navigationOptions = {
+        // headerTitle: this.props.recipeName,
+    };
+
     componentWillMount() {
-        // this.props.getRecipesById();
+        this.props.fetchRecipe(this.props.recipeId);
     }
 
     render() {
         return (
             <View style={styles.container}>
-                <Text>Recipe</Text>
+                <Text>{this.props.recipe.name}</Text>
+                <Text>{this.props.recipe.ingredients}</Text>
+                <Text>{this.props.recipe.preparation_description}</Text>
             </View>
         );
     }
@@ -32,12 +42,17 @@ const styles = {
     }
 }
 
-// const mapDispatchToProps = (dispatch) => {
-//     return {
-//         getRecipesById: (id) => dispatch(getRecipesById(id)),
-//     }
-// };
-//
-// export default connect(null, mapDispatchToProps)(RecipeScene);
+const mapStateToProps = (state, ownProps) => {
+    const reducer = state.RecipesReducer;
+    const { recipe } = reducer;
 
-export default RecipeScene;
+    return { recipe };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchRecipe: (id) => dispatch(fetchRecipe(id)),
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RecipeScene);

@@ -36,6 +36,26 @@ export function getRecipesById(recipeIds, limit, offset) {
     });
 }
 
+export function getFullRecipe(recipeId) {
+  return doRequest(
+      `
+        {
+            recipes(ids: [`+recipeId+`]) {
+                id
+                name
+                img_url
+                ingredients
+                preparation_description
+            }
+        }
+      `
+  )
+    .then(recipes => recipes.json())
+    .then(recipes => {
+        return recipes.data.recipes[0];
+    });
+}
+
 function doRequest(query) {
     return fetch(API_ENDPOINT, {
         method: 'POST',

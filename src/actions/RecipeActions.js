@@ -27,12 +27,17 @@ import {
     FAVORITE_RECIPE,
     UNFAVORITE_RECIPE,
 
-    UPDATE_FAVORITE_STATUS
+    UPDATE_FAVORITE_STATUS,
+
+    FETCH_RECIPE,
+    FETCH_RECIPE_SUCCESS,
+    FETCH_RECIPE_FAILURE
 } from './types';
 
 import {
     getRecommendedRecipes,
-    getRecipesById
+    getRecipesById,
+    getFullRecipe
 } from '../api/smakowity';
 import { AsyncStorage } from 'react-native';
 
@@ -220,7 +225,7 @@ export function fetchNewFavoriteRecipe(recipeId) {
         dispatch(fetchNewFavoritedRecipeRequest());
 
         return getRecipesById([recipeId], 1, 0)
-            .then(recipes => dispatch(fetchNewFavoritedRecipeSuccess(recipes)))
+            .then(recipe => dispatch(fetchNewFavoritedRecipeSuccess(recipe)))
             .catch(() => dispatch(fetchNewFavoritedRecipeFailure()))
     }
 }
@@ -297,5 +302,34 @@ export function getFavoriteIds() {
         }
 
         return favoriteIds;
+    }
+}
+
+export function fetchRecipeRequest() {
+    return {
+        type: FETCH_RECIPE
+    }
+}
+
+export function fetchRecipeSuccess(recipe) {
+    return {
+        type: FETCH_RECIPE_SUCCESS,
+        payload: recipe
+    }
+}
+
+export function fetchRecipeFailure() {
+    return {
+        type: FETCH_RECIPE_FAILURE
+    }
+}
+
+export function fetchRecipe(recipeId) {
+    return dispatch => {
+        dispatch(fetchRecipeRequest());
+
+        return getFullRecipe(recipeId)
+            .then(recipe => dispatch(fetchRecipeSuccess(recipe)))
+            .catch(() => dispatch(fetchRecipeFailure()))
     }
 }

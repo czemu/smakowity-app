@@ -27,7 +27,9 @@ import {
 
     FAVORITE_RECIPE,
     UNFAVORITE_RECIPE,
-    UPDATE_FAVORITE_STATUS
+    UPDATE_FAVORITE_STATUS,
+
+    FETCH_RECIPE_SUCCESS
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -37,7 +39,8 @@ const INITIAL_STATE = {
     favoriteIds: [],
     loadingFavorited: false,
     refreshingFavorited: false,
-    favoritedRecipes: []
+    favoritedRecipes: [],
+    recipe: {}
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -124,6 +127,12 @@ export default (state = INITIAL_STATE, action) => {
 
                     return recipe;
                 })]
+            };
+
+        case FETCH_RECIPE_SUCCESS:
+            return {
+                ...state,
+                recipe: action.payload
             };
 
         default:
