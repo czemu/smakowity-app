@@ -12,7 +12,7 @@ class RouterComponent extends React.PureComponent {
         return (
             <Router>
                 <Stack key="root" hideNavBar={true}>
-                    <Stack tabs={true} tabBarStyle={styles.tabBarStyle}  activeTintColor={Colors.redColor}  headerForceInset={{ top: 'never' }}>
+                    <Stack tabs={true} tabBarStyle={styles.tabBarStyle} activeTintColor={Colors.redColor} headerForceInset={{ top: 'never' }}>
                         <Scene key="home" component={HomeScene } headerForceInset={{ top: 'never' }} />
                         <Scene key="categories" component={CategoriesScene} />
                         <Scene key="search" component={SearchScene} />
