@@ -46,6 +46,7 @@ class RecipeList extends React.PureComponent {
                     refreshing={this.props.refreshing}
                     onEndReached={this.props.onEndReached}
                     ListFooterComponent={this._renderFooter.bind(this)}
+                    ListEmptyComponent={this.props.ListEmptyComponent}
                 />
             </View>
         );

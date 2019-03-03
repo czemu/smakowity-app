@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, ScrollView, Text } from 'react-native';
+import { Icon } from 'expo';
 import TabBarIcon from '../components/common/TabBarIcon';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
@@ -10,6 +11,7 @@ import {
     getFavoriteIds
 } from '../actions/RecipeActions';
 import RecipeList from '../components/Recipe/RecipeList';
+import Colors from '../constants/Colors';
 
 class FavoritesScene extends React.Component {
     static navigationOptions = {
@@ -53,6 +55,19 @@ class FavoritesScene extends React.Component {
         }
     }
 
+    _renderEmptyInfo = () => {
+        return (
+            <ScrollView contentContainerStyle={styles.noFavorites}>
+                <Icon.Ionicons
+                    name={'md-heart'}
+                    size={100}
+                    color={Colors.redColor}
+                 />
+                <Text style={styles.noFavoritesText}>Nie masz jeszcze żadnych polubionych przepisów.</Text>
+            </ScrollView>
+        );
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -63,8 +78,9 @@ class FavoritesScene extends React.Component {
                     onRefresh={this._onRefresh.bind(this)}
                     onEndReached={this._onEndReached.bind(this)}
                     initialNumToRender={this.state.limit}
-                    onEndReachedThreshold={1}
+                    onEndReachedThreshold={0.5}
                     removeOnUnfavorite={true}
+                    ListEmptyComponent={this._renderEmptyInfo}
                 />
             </View>
         );
@@ -75,6 +91,23 @@ const styles = {
     container: {
         flex: 1,
     },
+
+    noFavorites: {
+        flex: 1,
+        alignItems: 'center',
+        marginTop: '50%',
+        padding: 8,
+    },
+
+    noFavoritesText: {
+        marginTop: 15,
+        textShadowColor: 'rgba(255, 255, 255, 0.9)',
+        textShadowOffset: {width: 1, height: 1},
+        textShadowRadius: 1,
+        fontSize: 20,
+        textAlign: 'center',
+        color: '#999'
+    }
 };
 
 const mapStateToProps = (state, ownProps) => {
