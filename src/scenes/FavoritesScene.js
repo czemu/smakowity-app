@@ -31,10 +31,11 @@ class FavoritesScene extends React.Component {
         this.state = {
             limit: 10,
             offset: 0,
-            more_items: 5,
+            more_items: 10,
             max_items: 100
         }
     }
+
 
     componentDidMount() {
         this.setState({offset: this.state.limit});

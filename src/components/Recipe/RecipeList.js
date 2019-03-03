@@ -12,6 +12,18 @@ class RecipeList extends React.PureComponent {
         this.props.getFavoriteIds();
     }
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            flatListReady: false
+        }
+    }
+
+    _scrolled() {
+        this.setState({flatListReady: true});
+    }
+
     _keyExtractor = (item, index) => item.id.toString();
 
     _renderItem({item}) {
@@ -37,6 +49,7 @@ class RecipeList extends React.PureComponent {
         return (
             <View style={styles.container}>
                 <FlatList
+                    onMomentumScrollBegin={this._scrolled.bind(this)}
                     data={this.props.recipes}
                     renderItem={this._renderItem.bind(this)}
                     keyExtractor={this._keyExtractor}
@@ -44,7 +57,12 @@ class RecipeList extends React.PureComponent {
                     contentContainerStyle={{paddingHorizontal: 8, paddingBottom: 8}}
                     onRefresh={this.props.onRefresh}
                     refreshing={this.props.refreshing}
-                    onEndReached={this.props.onEndReached}
+                    onEndReached={() => {
+                        if (this.state.flatListReady) {
+                            return this.props.onEndReached();
+                        }
+                    }}
+                    onEndReachedThreshold={this.props.onEndReachedThreshold}
                     ListFooterComponent={this._renderFooter.bind(this)}
                     ListEmptyComponent={this.props.ListEmptyComponent}
                 />
