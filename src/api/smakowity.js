@@ -44,8 +44,12 @@ export function getFullRecipe(recipeId) {
                 id
                 name
                 img_url
+                img_desc
                 ingredients
                 preparation_description
+                preparation_time
+                difficulty_degree
+                servings
             }
         }
       `
