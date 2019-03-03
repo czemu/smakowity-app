@@ -141,9 +141,9 @@ class RecipeScene extends React.PureComponent {
                         </View>
                     </View>
                     <Text style={styles.textHeader}>Składniki:</Text>
-                    <Text>{this._formatIngredients(this.props.recipe.ingredients)}</Text>
+                    <Text style={styles.longText}>{this._formatIngredients(this.props.recipe.ingredients)}</Text>
                     <Text style={styles.textHeader}>Opis przygotowania:</Text>
-                    <Text>{this.props.recipe.preparation_description}</Text>
+                    <Text style={styles.longText}>{this.props.recipe.preparation_description}</Text>
                 </View>
             </ScrollView>
         );
@@ -219,7 +219,8 @@ const styles = {
     },
 
     detailsContainer: {
-        padding: 10,
+        paddingHorizontal: 10,
+        paddingVertical: 15,
         backgroundColor: '#fff'
     },
 
@@ -258,7 +259,8 @@ const styles = {
 
     recipeName: {
         marginBottom: 15,
-        fontSize: 30,
+        fontSize: 28,
+        lineHeight: 28,
         fontWeight: 'bold'
     },
 
@@ -268,6 +270,10 @@ const styles = {
         fontSize: 18,
         fontWeight: 'bold',
         color: Colors.greenColor
+    },
+
+    longText: {
+        lineHeight: 22
     }
 }
 

@@ -60,6 +60,24 @@ export function getFullRecipe(recipeId) {
     });
 }
 
+export function getCategories() {
+  return doRequest(
+      `
+        {
+            categories {
+                id
+                name
+                img_url
+            }
+        }
+      `
+  )
+    .then(categories => categories.json())
+    .then(categories => {
+        return categories.data.categories;
+    });
+}
+
 function doRequest(query) {
     return fetch(API_ENDPOINT, {
         method: 'POST',
