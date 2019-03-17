@@ -3,6 +3,7 @@ import {
     Image,
     Text,
     View,
+    ActivityIndicator
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
@@ -13,6 +14,7 @@ import {
     updateFavoriteStatus,
 } from '../actions/RecipeActions';
 import RecipeList from '../components/Recipe/RecipeList';
+import Colors from '../constants/Colors';
 
 export class CategoryScene extends React.Component {
     static navigationOptions = ({ navigation }) => ({
@@ -50,10 +52,18 @@ export class CategoryScene extends React.Component {
     }
 
     render() {
+        if (this.props.loadingCategory) {
+            return (
+                <View style={styles.indicatorContainer}>
+                    <ActivityIndicator size="large" color={Colors.redColor} style={styles.indicator} />
+                </View>
+            );
+        }
+
         return (
             <View style={styles.container}>
                 <RecipeList
-                loading={this.props.loadingCategory}
+                loading={this.props.loadingCategoryMore}
                 refreshing={this.props.refreshingCategory}
                 recipes={this.props.categoryRecipes}
                 onRefresh={this._onRefresh.bind(this)}
@@ -70,13 +80,24 @@ const styles = {
     container: {
         flex: 1,
     },
+
+    indicatorContainer: {
+        paddingVertical: 20,
+        flex: 1,
+        alignItems: 'center',
+        jusifyContent: 'center'
+    },
+
+    indicator: {
+        flex: 1
+    }
 };
 
 const mapStateToProps = (state, ownProps) => {
     const reducer = state.RecipesReducer;
-    const { categoryRecipes, loadingCategory, refreshingCategory } = reducer;
+    const { categoryRecipes, loadingCategory, loadingCategoryMore, refreshingCategory } = reducer;
 
-    return { categoryRecipes, loadingCategory, refreshingCategory };
+    return { categoryRecipes, loadingCategory, loadingCategoryMore, refreshingCategory };
 };
 
 const mapDispatchToProps = (dispatch) => {

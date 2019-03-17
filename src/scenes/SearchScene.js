@@ -10,7 +10,7 @@ import Colors from '../constants/Colors';
 
 class SearchScene extends React.Component {
     static navigationOptions = {
-        headerTitle: () => <SearchHeader placeholder="Szukaj przepisów..." />,
+        headerTitle: () => <SearchHeader placeholder="Szukana fraza..." />,
         tabBarLabel: 'Szukaj',
         tabBarIcon: ({ focused }) => (
             <TabBarIcon
@@ -56,7 +56,7 @@ class SearchScene extends React.Component {
                     size={100}
                     color={'#999'}
                  />
-                <Text style={styles.noResultsText}>Użyj wyszukiwarki powyżej, aby wyszukać przepisy.</Text>
+                <Text style={styles.noResultsText}>Wpisz tekst do pola powyżej, aby wyszukać przepisy.</Text>
             </ScrollView>
         );
     }

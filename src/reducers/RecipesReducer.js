@@ -41,7 +41,9 @@ import {
     REFRESH_CATEGORY_RECIPES_SUCCESS,
     REFRESH_CATEGORY_RECIPES_FAILURE,
 
-    FETCH_MORE_CATEGORY_RECIPES_SUCCESS
+    FETCH_MORE_CATEGORY_RECIPES,
+    FETCH_MORE_CATEGORY_RECIPES_SUCCESS,
+    FETCH_MORE_CATEGORY_RECIPES_FAILURE
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -56,6 +58,7 @@ const INITIAL_STATE = {
     loadingRecipe: false,
     categoryRecipes: [],
     loadingCategory: false,
+    loadingCategoryMore: false,
     refreshingCategory: false,
     searchResults: [],
     loadingSearchResults: false,
@@ -163,9 +166,9 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, loadingRecipe: false };
 
         case FETCH_CATEGORY_RECIPES:
-            return { ...state, loadingCategory: true };
+            return { ...state, loadingCategory: true, loadingCategoryMore: true };
         case FETCH_CATEGORY_RECIPES_SUCCESS:
-            return { ...state, loadingCategory: false, categoryRecipes: action.payload };
+            return { ...state, loadingCategory: false, loadingCategoryMore: false, categoryRecipes: action.payload };
         case FETCH_CATEGORY_RECIPES_FAILURE:
             return { ...state, loadingCategory: false };
 
@@ -176,13 +179,18 @@ export default (state = INITIAL_STATE, action) => {
         case REFRESH_CATEGORY_RECIPES_FAILURE:
             return { ...state, refreshingCategory: false };
 
+        case FETCH_MORE_CATEGORY_RECIPES:
+            return { ...state, loadingCategoryMore: true };
+
         case FETCH_MORE_CATEGORY_RECIPES_SUCCESS:
             return {
                 ...state,
-                loadingCategory: false,
+                loadingCategoryMore: false,
                 categoryRecipes: [...state.categoryRecipes, ...action.payload]
             };
 
+        case FETCH_MORE_CATEGORY_RECIPES_FAILURE:
+            return { ...state, loadingCategoryMore: false };
 
         default:
             return state;

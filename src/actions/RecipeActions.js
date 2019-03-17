@@ -41,7 +41,9 @@ import {
     REFRESH_CATEGORY_RECIPES_SUCCESS,
     REFRESH_CATEGORY_RECIPES_FAILURE,
 
-    FETCH_MORE_CATEGORY_RECIPES_SUCCESS
+    FETCH_MORE_CATEGORY_RECIPES,
+    FETCH_MORE_CATEGORY_RECIPES_SUCCESS,
+    FETCH_MORE_CATEGORY_RECIPES_FAILURE
 } from './types';
 
 import {
@@ -383,10 +385,22 @@ export function refreshCategoryRecipesFailure() {
     }
 }
 
+export function fetchMoreCategoryRecipesRequest() {
+    return {
+        type: FETCH_MORE_CATEGORY_RECIPES
+    }
+}
+
 export function fetchMoreCategoryRecipesSuccess(recipes) {
     return {
         type: FETCH_MORE_CATEGORY_RECIPES_SUCCESS,
         payload: recipes
+    }
+}
+
+export function fetchMoreCategoryRecipesFailure() {
+    return {
+        type: FETCH_MORE_CATEGORY_RECIPES_FAILURE
     }
 }
 
@@ -415,10 +429,10 @@ export function refreshCategoryRecipes(id, limit) {
 
 export function fetchMoreCategoryRecipes(id, limit, offset) {
     return dispatch => {
-        dispatch(fetchCategoryRecipesRequest());
+        dispatch(fetchMoreCategoryRecipesRequest());
 
         return getRecipesByCategory(id, limit, offset)
             .then(recipes => dispatch(fetchMoreCategoryRecipesSuccess(recipes)))
-            .catch(() => dispatch(fetchCategoryRecipesFailure()));
+            .catch(() => dispatch(fetchMoreCategoryRecipesFailure()));
     }
 }
