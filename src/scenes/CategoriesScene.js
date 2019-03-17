@@ -1,6 +1,7 @@
 import React from 'react';
-import { ActivityIndicator, ScrollView, FlatList, Text, View, Image } from 'react-native';
+import { ActivityIndicator, ScrollView, FlatList, Text, View, Image, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
+import { Actions } from 'react-native-router-flux';
 import TabBarIcon from '../components/common/TabBarIcon';
 import {
     fetchCategories
@@ -27,14 +28,14 @@ export class CategoriesScene extends React.Component {
 
     _renderItem({item}) {
         return (
-            <View style={styles.box}>
+            <TouchableOpacity style={styles.box} onPress={() => Actions.category({id: item.id, name: item.name})}>
                 <View style={styles.imageWrapper}>
                     <Image style={styles.image} source={{uri: item.img_url}} resizeMode="cover" />
                 </View>
                 <View style={styles.nameWrapper}>
                     <Text style={styles.name}>{item.name}</Text>
                 </View>
-            </View>
+            </TouchableOpacity>
         );
     }
 

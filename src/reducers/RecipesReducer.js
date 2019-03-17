@@ -31,7 +31,17 @@ import {
 
     FETCH_RECIPE,
     FETCH_RECIPE_SUCCESS,
-    FETCH_RECIPE_FAILURE
+    FETCH_RECIPE_FAILURE,
+
+    FETCH_CATEGORY_RECIPES,
+    FETCH_CATEGORY_RECIPES_SUCCESS,
+    FETCH_CATEGORY_RECIPES_FAILURE,
+
+    REFRESH_CATEGORY_RECIPES,
+    REFRESH_CATEGORY_RECIPES_SUCCESS,
+    REFRESH_CATEGORY_RECIPES_FAILURE,
+
+    FETCH_MORE_CATEGORY_RECIPES_SUCCESS
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -43,7 +53,10 @@ const INITIAL_STATE = {
     refreshingFavorited: false,
     favoritedRecipes: [],
     recipe: {},
-    loadingRecipe: false
+    loadingRecipe: false,
+    categoryRecipes: [],
+    loadingCategory: false,
+    refreshingCategory: false
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -129,6 +142,11 @@ export default (state = INITIAL_STATE, action) => {
                     recipe.isFavorited = state.favoriteIds.indexOf(recipe.id) > -1;
 
                     return recipe;
+                })],
+                categoryRecipes: [...state.categoryRecipes.map(recipe => {
+                    recipe.isFavorited = state.favoriteIds.indexOf(recipe.id) > -1;
+
+                    return recipe;
                 })]
             };
 
@@ -140,6 +158,28 @@ export default (state = INITIAL_STATE, action) => {
 
         case FETCH_RECIPE_FAILURE:
             return { ...state, loadingRecipe: false };
+
+        case FETCH_CATEGORY_RECIPES:
+            return { ...state, loadingCategory: true };
+        case FETCH_CATEGORY_RECIPES_SUCCESS:
+            return { ...state, loadingCategory: false, categoryRecipes: action.payload };
+        case FETCH_CATEGORY_RECIPES_FAILURE:
+            return { ...state, loadingCategory: false };
+
+        case REFRESH_CATEGORY_RECIPES:
+            return { ...state, refreshingCategory: true };
+        case REFRESH_CATEGORY_RECIPES_SUCCESS:
+            return { ...state, refreshingCategory: false, categoryRecipes: action.payload };
+        case REFRESH_CATEGORY_RECIPES_FAILURE:
+            return { ...state, refreshingCategory: false };
+
+        case FETCH_MORE_CATEGORY_RECIPES_SUCCESS:
+            return {
+                ...state,
+                loadingCategory: false,
+                categoryRecipes: [...state.categoryRecipes, ...action.payload]
+            };
+
 
         default:
             return state;

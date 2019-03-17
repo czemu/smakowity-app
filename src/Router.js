@@ -5,6 +5,7 @@ import CategoriesScene from './scenes/CategoriesScene';
 import SearchScene from './scenes/SearchScene';
 import FavoritesScene from './scenes/FavoritesScene';
 import RecipeScene from './scenes/RecipeScene';
+import CategoryScene from './scenes/CategoryScene';
 import Colors from './constants/Colors';
 
 class RouterComponent extends React.PureComponent {
@@ -19,6 +20,7 @@ class RouterComponent extends React.PureComponent {
                         <Scene key="favorites" component={FavoritesScene} />
                     </Stack>
                     <Scene key="recipe" component={RecipeScene} hideNavBar={false} />
+                    <Scene key="category" component={CategoryScene} hideNavBar={false} />
                 </Stack>
             </Router>
         );

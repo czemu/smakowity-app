@@ -31,13 +31,24 @@ import {
 
     FETCH_RECIPE,
     FETCH_RECIPE_SUCCESS,
-    FETCH_RECIPE_FAILURE
+    FETCH_RECIPE_FAILURE,
+
+    FETCH_CATEGORY_RECIPES,
+    FETCH_CATEGORY_RECIPES_SUCCESS,
+    FETCH_CATEGORY_RECIPES_FAILURE,
+
+    REFRESH_CATEGORY_RECIPES,
+    REFRESH_CATEGORY_RECIPES_SUCCESS,
+    REFRESH_CATEGORY_RECIPES_FAILURE,
+
+    FETCH_MORE_CATEGORY_RECIPES_SUCCESS
 } from './types';
 
 import {
     getRecommendedRecipes,
     getRecipesById,
-    getFullRecipe
+    getFullRecipe,
+    getRecipesByCategory
 } from '../api/smakowity';
 import { AsyncStorage } from 'react-native';
 
@@ -206,7 +217,7 @@ export function refreshFavoritedRecipes(recipeIds, limit) {
 
         return getRecipesById(recipeIds, limit, 0)
             .then(recipes => dispatch(refreshFavoritedRecipesSuccess(recipes)))
-            .catch(() => dispatch(refresFavoritedhRecipesFailure()))
+            .catch(() => dispatch(refreshFavoritedhRecipesFailure()))
     }
 }
 
@@ -331,5 +342,83 @@ export function fetchRecipe(recipeId) {
         return getFullRecipe(recipeId)
             .then(recipe => dispatch(fetchRecipeSuccess(recipe)))
             .catch(() => dispatch(fetchRecipeFailure()))
+    }
+}
+
+export function fetchCategoryRecipesRequest() {
+    return {
+        type: FETCH_CATEGORY_RECIPES
+    };
+}
+
+export function fetchCategoryRecipesSuccess(recipes) {
+    return {
+        type: FETCH_CATEGORY_RECIPES_SUCCESS,
+        payload: recipes
+    };
+}
+
+export function fetchCategoryRecipesFailure() {
+    return {
+        type: FETCH_CATEGORY_RECIPES_FAILURE
+    }
+}
+
+export function refreshCategoryRecipesRequest() {
+    return {
+        type: REFRESH_CATEGORY_RECIPES
+    }
+}
+
+export function refreshCategoryRecipesSuccess(recipes) {
+    return {
+        type: REFRESH_CATEGORY_RECIPES_SUCCESS,
+        payload: recipes
+    }
+}
+
+export function refreshCategoryRecipesFailure() {
+    return {
+        type: REFRESH_CATEGORY_RECIPES_FAILURE
+    }
+}
+
+export function fetchMoreCategoryRecipesSuccess(recipes) {
+    return {
+        type: FETCH_MORE_CATEGORY_RECIPES_SUCCESS,
+        payload: recipes
+    }
+}
+
+export function fetchCategoryRecipes(id, limit, offset) {
+    return dispatch => {
+        dispatch(fetchCategoryRecipesRequest());
+
+        return getRecipesByCategory(id, limit, offset)
+            .then(recipes => {
+                dispatch(fetchCategoryRecipesSuccess(recipes));
+                dispatch(updateFavoriteStatus());
+            })
+            .catch(() => dispatch(fetchCategoryRecipesFailure()))
+    }
+}
+
+export function refreshCategoryRecipes(id, limit) {
+    return dispatch => {
+        dispatch(refreshCategoryRecipesRequest());
+
+        return getRecipesByCategory(id, limit, 0)
+            .then(recipes => dispatch(refreshCategoryRecipesSuccess(recipes)))
+            .catch(() => dispatch(refreshCategoryhRecipesFailure()))
+    }
+}
+
+export function fetchMoreCategoryRecipes(id, limit, offset) {
+    return dispatch => {
+        dispatch(fetchCategoryRecipesRequest());
+
+        return getRecipesByCategory(id, limit, offset)
+            .then(recipes => dispatch(fetchMoreCategoryRecipesSuccess(recipes)))
+            .catch(() => dispatch(fetchCategoryRecipesFailure()));
     }
 }
