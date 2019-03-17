@@ -62,7 +62,7 @@ class FavoritesScene extends React.Component {
                 <Icon.Ionicons
                     name={'md-heart'}
                     size={100}
-                    color={Colors.redColor}
+                    color={'#999'}
                  />
                 <Text style={styles.noFavoritesText}>Nie masz jeszcze żadnych polubionych przepisów.</Text>
             </ScrollView>
@@ -102,9 +102,6 @@ const styles = {
 
     noFavoritesText: {
         marginTop: 15,
-        textShadowColor: 'rgba(255, 255, 255, 0.9)',
-        textShadowOffset: {width: 1, height: 1},
-        textShadowRadius: 1,
         fontSize: 20,
         textAlign: 'center',
         color: '#999'

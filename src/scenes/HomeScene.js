@@ -18,7 +18,12 @@ import RecipeList from '../components/Recipe/RecipeList';
 
 export class HomeScene extends React.Component {
     static navigationOptions = {
-        headerTitle: () => <SearchHeader placeholder="Szukaj przepisów..." />,
+        // headerTitle: () => (
+        //     <View style={styles.headerContainer}>
+        //         <Image style={styles.headerLogo} source={require('../../assets/logo.png')} resizeMode="cover" />
+        //     </View>
+        // ),
+        title: 'Najnowsze przepisy',
         tabBarLabel: 'Start',
         tabBarIcon: ({ focused }) => (
           <TabBarIcon
@@ -74,6 +79,16 @@ export class HomeScene extends React.Component {
 }
 
 const styles = {
+    headerContainer: {
+        paddingVertical: 15,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
+    headerLogo: {
+    },
+
     container: {
         flex: 1,
     },

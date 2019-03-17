@@ -56,7 +56,10 @@ const INITIAL_STATE = {
     loadingRecipe: false,
     categoryRecipes: [],
     loadingCategory: false,
-    refreshingCategory: false
+    refreshingCategory: false,
+    searchResults: [],
+    loadingSearchResults: false,
+    refreshingSearchResults: false
 };
 
 export default (state = INITIAL_STATE, action) => {
