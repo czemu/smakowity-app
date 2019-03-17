@@ -38,7 +38,7 @@ class RecipeItem extends React.PureComponent {
             <Animated.View style={[styles.container, {marginTop: this.props.index == 0 ? 0 : 8, opacity: this.state.animationValue}]}>
                 <TouchableOpacity
                     style={styles.imageWrapper}
-                    onPress={() => Actions.recipe({recipeId: this.props.recipe.id})}
+                    onPress={() => Actions.recipe({recipeId: this.props.recipe.id, recipeName: this.props.recipe.name})}
                 >
                     <Image style={styles.image} source={{uri: this.props.recipe.img_url}} resizeMode="cover" />
                     <TouchableOpacity
@@ -55,7 +55,7 @@ class RecipeItem extends React.PureComponent {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.detailsContainer}
-                    onPress={() => Actions.recipe({recipeId: this.props.recipe.id})}
+                    onPress={() => Actions.recipe({recipeId: this.props.recipe.id, recipeName: this.props.recipe.name})}
                 >
                     <Text style={styles.recipeName} numberOfLines={1} ellipsizeMode="tail">{this.props.recipe.name}</Text>
                 </TouchableOpacity>

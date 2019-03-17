@@ -14,10 +14,11 @@ class RecipeScene extends React.PureComponent {
         super(props);
     }
 
-    static navigationOptions = {
+    static navigationOptions = ({ navigation }) => ({
+        title: `${navigation.state.params.recipeName}`,
         headerForceInset: { top: 'never', bottom: 'never' },
         headerRight: null
-    }
+    });
 
     componentWillMount() {
         this.props.fetchRecipe(this.props.recipeId);
@@ -104,7 +105,6 @@ class RecipeScene extends React.PureComponent {
                     <Text style={styles.imageDescription}>{this._formatImageDescription(this.props.recipe.img_desc)}</Text>
                 </View>
                 <View style={styles.detailsContainer}>
-                    <Text style={styles.recipeName}>{this.props.recipe.name}</Text>
                     <View style={styles.iconsContainer}>
                         <View style={styles.iconBox}>
                             <View style={styles.iconBoxHeader}>
@@ -255,13 +255,6 @@ const styles = {
     iconBoxValue: {
         flex: 1,
         textAlign: 'center'
-    },
-
-    recipeName: {
-        marginBottom: 15,
-        fontSize: 28,
-        lineHeight: 28,
-        fontWeight: 'bold'
     },
 
     textHeader: {
