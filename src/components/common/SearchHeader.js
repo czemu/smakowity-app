@@ -8,6 +8,7 @@ export default class SearchHeader extends React.Component {
             <View style={styles.container}>
                 <TextInput
                     style={styles.input}
+                    onChangeText={this.props.onChangeText}
                     placeholder={this.props.placeholder}
                     placeholderTextColor="#999"
                 />

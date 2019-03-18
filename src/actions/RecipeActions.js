@@ -43,14 +43,25 @@ import {
 
     FETCH_MORE_CATEGORY_RECIPES,
     FETCH_MORE_CATEGORY_RECIPES_SUCCESS,
-    FETCH_MORE_CATEGORY_RECIPES_FAILURE
+    FETCH_MORE_CATEGORY_RECIPES_FAILURE,
+
+    FETCH_SEARCH_RECIPES,
+    FETCH_SEARCH_RECIPES_SUCCESS,
+    FETCH_SEARCH_RECIPES_FAILURE,
+
+    REFRESH_SEARCH_RECIPES,
+    REFRESH_SEARCH_RECIPES_SUCCESS,
+    REFRESH_SEARCH_RECIPES_FAILURE,
+
+    FETCH_MORE_SEARCH_RECIPES_SUCCESS,
 } from './types';
 
 import {
     getRecommendedRecipes,
     getRecipesById,
     getFullRecipe,
-    getRecipesByCategory
+    getRecipesByCategory,
+    getRecipesByQuery
 } from '../api/smakowity';
 import { AsyncStorage } from 'react-native';
 
@@ -124,7 +135,7 @@ export function refreshRecommendedRecipes(limit) {
 
         return getRecommendedRecipes(limit, 0)
             .then(recipes => dispatch(refreshRecommendedRecipesSuccess(recipes)))
-            .catch(() => dispatch(refresRecommendedhRecipesFailure()))
+            .catch(() => dispatch(refreshRecommendedRecipesFailure()))
     }
 }
 
@@ -434,5 +445,83 @@ export function fetchMoreCategoryRecipes(id, limit, offset) {
         return getRecipesByCategory(id, limit, offset)
             .then(recipes => dispatch(fetchMoreCategoryRecipesSuccess(recipes)))
             .catch(() => dispatch(fetchMoreCategoryRecipesFailure()));
+    }
+}
+
+export function fetchSearchRecipesRequest() {
+    return {
+        type: FETCH_SEARCH_RECIPES
+    };
+}
+
+export function fetchSearchRecipesSuccess(recipes) {
+    return {
+        type: FETCH_SEARCH_RECIPES_SUCCESS,
+        payload: recipes
+    };
+}
+
+export function fetchSearchRecipesFailure() {
+    return {
+        type: FETCH_SEARCH_RECIPES_FAILURE
+    }
+}
+
+export function refreshSearchRecipesRequest() {
+    return {
+        type: REFRESH_SEARCH_RECIPES
+    }
+}
+
+export function refreshSearchRecipesSuccess(recipes) {
+    return {
+        type: REFRESH_SEARCH_RECIPES_SUCCESS,
+        payload: recipes
+    }
+}
+
+export function refreshSearchRecipesFailure() {
+    return {
+        type: REFRESH_SEARCH_RECIPES_FAILURE
+    }
+}
+
+export function fetchMoreSearchRecipesSuccess(recipes) {
+    return {
+        type: FETCH_MORE_SEARCH_RECIPES_SUCCESS,
+        payload: recipes,
+    }
+}
+
+export function fetchSearchRecipes(query, limit, offset) {
+    return dispatch => {
+        dispatch(fetchSearchRecipesRequest());
+
+        return getRecipesByQuery(query, limit, offset)
+            .then(recipes => {
+                dispatch(fetchSearchRecipesSuccess(recipes));
+                dispatch(updateFavoriteStatus());
+            })
+            .catch(() => dispatch(fetchSearchRecipesFailure()))
+    }
+}
+
+export function refreshSearchRecipes(query, limit) {
+    return dispatch => {
+        dispatch(refreshSearchRecipesRequest());
+
+        return getRecipesByQuery(query, limit, 0)
+            .then(recipes => dispatch(refreshSearchRecipesSuccess(recipes)))
+            .catch(() => dispatch(refreshSearchRecipesFailure()))
+    }
+}
+
+export function fetchMoreSearchRecipes(query, limit, offset) {
+    return dispatch => {
+        dispatch(fetchSearchRecipesRequest());
+
+        return getRecipesByQuery(query, limit, offset)
+            .then(recipes => dispatch(fetchMoreSearchRecipesSuccess(recipes)))
+            .catch(() => dispatch(fetchSearchRecipesFailure()));
     }
 }

@@ -6,24 +6,37 @@ import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import SearchHeader from '../components/common/SearchHeader';
 import RecipeList from '../components/Recipe/RecipeList';
+import {
+    fetchSearchRecipes,
+    refreshSearchRecipes,
+    fetchMoreSearchRecipes,
+    updateFavoriteStatus,
+} from '../actions/RecipeActions';
 import Colors from '../constants/Colors';
 
 class SearchScene extends React.Component {
-    static navigationOptions = {
-        headerTitle: () => <SearchHeader placeholder="Szukana fraza..." />,
-        tabBarLabel: 'Szukaj',
-        tabBarIcon: ({ focused }) => (
-            <TabBarIcon
-                focused={focused}
-                name={'md-search'}
-            />
-        )
+    static navigationOptions = ({navigation}) => {
+        return {
+            headerTitle: () => (
+                <SearchHeader
+                    placeholder="Szukana fraza..."
+                    onChangeText={navigation.getParam('searchFunc')}
+                />),
+            tabBarLabel: 'Szukaj',
+            tabBarIcon: ({ focused }) => (
+                <TabBarIcon
+                    focused={focused}
+                    name={'md-search'}
+                />
+            )
+        }
     };
 
     constructor(props) {
         super(props);
 
         this.state = {
+            searchText: null,
             limit: 10,
             offset: 0,
             more_items: 5,
@@ -31,24 +44,38 @@ class SearchScene extends React.Component {
         }
     }
 
+    searchFunction = (text) => {
+       this.setState({searchText: text});
+       this.props.fetchSearchRecipes(text, this.state.limit, 0);
+    }
+
     componentDidMount() {
+        this.props.navigation.setParams({searchFunc: this.searchFunction});
+
         this.setState({offset: this.state.limit});
-        // this.props.fetchCategoryRecipes(this.props.id, this.state.limit, 0);
+    }
+
+    componentWillUnmount() {
+        this.props.navigation.setParams({searchFunc: null})
     }
 
     _onRefresh() {
         this.setState({offset: this.state.limit});
-        this.props.refreshCategoryRecipes(this.props.id, this.state.limit);
+        this.props.refreshSearchRecipes(this.props.query, this.state.limit);
     }
 
     _onEndReached() {
-        if ( ! this.props.loadingCategory && ! this.props.refreshingCategory && (this.state.offset + this.state.more_items) <= this.state.max_items) {
+        if ( ! this.props.loadingSearchRecipes && ! this.props.refreshingSearchRecipes && (this.state.offset + this.state.more_items) <= this.state.max_items) {
             this.setState({offset: this.state.offset + this.state.more_items});
-            this.props.fetchMoreCategoryRecipes(this.props.id, this.state.more_items, this.state.offset);
+            this.props.fetchMoreSearchRecipes(this.props.query, this.state.more_items, this.state.offset);
         }
     }
 
     _renderEmptyInfo = () => {
+        if (this.state.searchText != null && this.state.searchText != '') {
+            return <Text style={styles.noResultsText}>Brak wyników wyszukiwania.</Text>;
+        }
+
         return (
             <ScrollView contentContainerStyle={styles.noResults}>
                 <Icon.Ionicons
@@ -65,9 +92,9 @@ class SearchScene extends React.Component {
         return (
             <View style={styles.container}>
                 <RecipeList
-                    loading={this.props.loadingSearchResults}
-                    refreshing={this.props.refreshingSearchResults}
-                    recipes={this.props.searchResults}
+                    loading={this.props.loadingSearchRecipes}
+                    refreshing={this.props.refreshingSearchRecipes}
+                    recipes={this.props.searchRecipes}
                     onRefresh={this._onRefresh.bind(this)}
                     onEndReached={this._onEndReached.bind(this)}
                     initialNumToRender={this.state.limit}
@@ -103,17 +130,17 @@ const styles = {
 
 const mapStateToProps = (state, ownProps) => {
     const reducer = state.RecipesReducer;
-    const { searchResults, loadingSearchResults, refreshingSearchResults } = reducer;
+    const { searchRecipes, loadingSearchRecipes, refreshingSearchRecipes } = reducer;
 
-    return { searchResults, loadingSearchResults, refreshingSearchResults };
+    return { searchRecipes, loadingSearchRecipes, refreshingSearchRecipes };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchFavoritedRecipes: (recipeIds, limit, offset) => dispatch(fetchFavoritedRecipes(recipeIds, limit, offset)),
-        fetchMoreFavoritedRecipes: (recipeIds, limit, offset) => dispatch(fetchMoreFavoritedRecipes(recipeIds, limit, offset)),
-        refreshFavoritedRecipes: (recipeIds, limit) => dispatch(refreshFavoritedRecipes(recipeIds, limit)),
-        getFavoriteIds: () => dispatch(getFavoriteIds()),
+        fetchSearchRecipes: (query, limit, offset) => dispatch(fetchSearchRecipes(query, limit, offset)),
+        fetchMoreSearchRecipes: (query, limit, offset) => dispatch(fetchMoreSearchRecipes(query, limit, offset)),
+        refreshSearchRecipes: (query, limit) => dispatch(refreshSearchRecipes(query, limit)),
+        updateFavoriteStatus: () => dispatch(updateFavoriteStatus())
     }
 };
 

@@ -43,7 +43,17 @@ import {
 
     FETCH_MORE_CATEGORY_RECIPES,
     FETCH_MORE_CATEGORY_RECIPES_SUCCESS,
-    FETCH_MORE_CATEGORY_RECIPES_FAILURE
+    FETCH_MORE_CATEGORY_RECIPES_FAILURE,
+
+    FETCH_SEARCH_RECIPES,
+    FETCH_SEARCH_RECIPES_SUCCESS,
+    FETCH_SEARCH_RECIPES_FAILURE,
+
+    REFRESH_SEARCH_RECIPES,
+    REFRESH_SEARCH_RECIPES_SUCCESS,
+    REFRESH_SEARCH_RECIPES_FAILURE,
+
+    FETCH_MORE_SEARCH_RECIPES_SUCCESS,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -60,9 +70,9 @@ const INITIAL_STATE = {
     loadingCategory: false,
     loadingCategoryMore: false,
     refreshingCategory: false,
-    searchResults: [],
-    loadingSearchResults: false,
-    refreshingSearchResults: false
+    searchRecipes: [],
+    loadingSearchRecipes: false,
+    refreshingSearchRecipes: false
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -191,6 +201,27 @@ export default (state = INITIAL_STATE, action) => {
 
         case FETCH_MORE_CATEGORY_RECIPES_FAILURE:
             return { ...state, loadingCategoryMore: false };
+
+        case FETCH_SEARCH_RECIPES:
+            return { ...state, loadingSearchRecipes: true };
+        case FETCH_SEARCH_RECIPES_SUCCESS:
+            return { ...state, loadingSearchRecipes: false, searchRecipes: action.payload };
+        case FETCH_SEARCH_RECIPES_FAILURE:
+            return { ...state, loadingSearchRecipes: false };
+
+        case REFRESH_SEARCH_RECIPES:
+            return { ...state, refreshingSearchRecipes: true };
+        case REFRESH_SEARCH_RECIPES_SUCCESS:
+            return { ...state, refreshingSearchRecipes: false, searchRecipes: action.payload };
+        case REFRESH_SEARCH_RECIPES_FAILURE:
+            return { ...state, refreshingSearchRecipes: false };
+
+        case FETCH_MORE_SEARCH_RECIPES_SUCCESS:
+            return {
+                ...state,
+                loadingSearchRecipes: false,
+                searchRecipes: [...state.searchRecipes, ...action.payload]
+            };
 
         default:
             return state;

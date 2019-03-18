@@ -54,6 +54,25 @@ export function getRecipesByCategory(categoryId, limit, offset) {
     });
 }
 
+export function getRecipesByQuery(query, limit, offset) {
+  return doRequest(
+      `
+        {
+            recipes(search: "`+query+`", limit: `+limit+`, offset: `+offset+`) {
+                id
+                name
+                img_url
+            }
+        }
+      `
+  )
+    .then(recipes => recipes.json())
+    .then(recipes => {
+        console.log(recipes);
+        return recipes.data.recipes;
+    });
+}
+
 export function getFullRecipe(recipeId) {
   return doRequest(
       `
