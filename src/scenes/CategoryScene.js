@@ -30,7 +30,7 @@ export class CategoryScene extends React.Component {
             limit: 10,
             offset: 0,
             more_items: 5,
-            max_items: 100
+            max_items: 500
         }
     }
 
