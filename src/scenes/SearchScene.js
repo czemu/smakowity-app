@@ -61,13 +61,13 @@ class SearchScene extends React.Component {
 
     _onRefresh() {
         this.setState({offset: this.state.limit});
-        this.props.refreshSearchRecipes(this.props.query, this.state.limit);
+        this.props.refreshSearchRecipes(this.state.searchText, this.state.limit);
     }
 
     _onEndReached() {
         if ( ! this.props.loadingSearchRecipes && ! this.props.refreshingSearchRecipes && (this.state.offset + this.state.more_items) <= this.state.max_items) {
             this.setState({offset: this.state.offset + this.state.more_items});
-            this.props.fetchMoreSearchRecipes(this.props.query, this.state.more_items, this.state.offset);
+            this.props.fetchMoreSearchRecipes(this.state.searchText, this.state.more_items, this.state.offset);
         }
     }
 
