@@ -21,7 +21,8 @@
     "assetBundlePatterns": [
       "**/*"
     ],"android": {
-      "package": "pl.smakowity"
+      "package": "pl.smakowity",
+      "permissions": []
     }
   }
 }
