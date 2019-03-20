@@ -68,7 +68,6 @@ export function getRecipesByQuery(query, limit, offset) {
   )
     .then(recipes => recipes.json())
     .then(recipes => {
-        console.log(recipes);
         return recipes.data.recipes;
     });
 }
