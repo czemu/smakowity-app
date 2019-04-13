@@ -1,8 +1,11 @@
 import React from 'react';
 import {
+    Alert,
     Image,
+    Linking,
     Text,
     View,
+    AsyncStorage
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import SearchHeader from '../components/common/SearchHeader';
@@ -40,6 +43,28 @@ export class HomeScene extends React.Component {
     }
 
     componentDidMount() {
+        AsyncStorage.getItem('privacy_policy_displayed', function(error, result) {
+            if (result == null) {
+                Alert.alert(
+                  'Polityka prywatności',
+                  'Szanujemy Twoją prywatność. Czy chcesz dowiedzieć się więcej?',
+                  [
+                      {
+                          text: 'Zobacz politykę',
+                          onPress: () => {
+                              Linking.openURL('https://smakowity.pl/app-privacy-policy');
+                          }
+                      },
+                      {
+                          text: 'Przejdź do aplikacji',
+                      }
+                  ]
+                );
+
+                AsyncStorage.setItem('privacy_policy_displayed', '1');
+            }
+        });
+
         this.setState({offset: this.state.limit});
         this.props.fetchRecommendedRecipes(this.state.limit, 0);
     }
@@ -55,6 +80,7 @@ export class HomeScene extends React.Component {
             this.props.fetchMoreRecommendedRecipes(this.state.more_items, this.state.offset);
         }
     }
+
 
     render() {
         return (
