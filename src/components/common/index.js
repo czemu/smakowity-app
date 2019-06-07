@@ -1,5 +1,7 @@
-import Subheader from './Subheader';
+import SearchHeader from './SearchHeader';
+import TabBarIcon from './TabBarIcon';
 
 export default {
-    Subheader,
+    SearchHeader,
+    TabBarIcon
 }

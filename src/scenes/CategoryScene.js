@@ -27,7 +27,7 @@ export class CategoryScene extends React.Component {
         super(props);
 
         this.state = {
-            limit: 10,
+            limit: 12,
             offset: 0,
             more_items: 5,
             max_items: 500
@@ -63,13 +63,13 @@ export class CategoryScene extends React.Component {
         return (
             <View style={styles.container}>
                 <RecipeList
-                loading={this.props.loadingCategoryMore}
-                refreshing={this.props.refreshingCategory}
-                recipes={this.props.categoryRecipes}
-                onRefresh={this._onRefresh.bind(this)}
-                onEndReached={this._onEndReached.bind(this)}
-                initialNumToRender={this.state.limit}
-                onEndReachedThreshold={1}
+                    loading={this.props.loadingCategoryMore}
+                    refreshing={this.props.refreshingCategory}
+                    recipes={this.props.categoryRecipes}
+                    onRefresh={this._onRefresh.bind(this)}
+                    onEndReached={this._onEndReached.bind(this)}
+                    initialNumToRender={this.state.limit}
+                    onEndReachedThreshold={0.7}
                 />
             </View>
         );

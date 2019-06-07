@@ -35,7 +35,7 @@ export class HomeScene extends React.Component {
         super(props);
 
         this.state = {
-            limit: 10,
+            limit: 12,
             offset: 0,
             more_items: 5,
             max_items: 100
@@ -86,13 +86,13 @@ export class HomeScene extends React.Component {
         return (
             <View style={styles.container}>
                 <RecipeList
-                loading={this.props.loadingRecommended}
-                refreshing={this.props.refreshingRecommended}
-                recipes={this.props.recommendedRecipes}
-                onRefresh={this._onRefresh.bind(this)}
-                onEndReached={this._onEndReached.bind(this)}
-                initialNumToRender={this.state.limit}
-                onEndReachedThreshold={1}
+                    loading={this.props.loadingRecommended}
+                    refreshing={this.props.refreshingRecommended}
+                    recipes={this.props.recommendedRecipes}
+                    onRefresh={this._onRefresh.bind(this)}
+                    onEndReached={this._onEndReached.bind(this)}
+                    initialNumToRender={this.state.limit}
+                    onEndReachedThreshold={0.7}
                 />
             </View>
         );

@@ -1,5 +1,6 @@
 import React from 'react';
-import { ActivityIndicator, ScrollView, View, FlatList } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
+import { FlatGrid } from 'react-native-super-grid';
 import { connect } from 'react-redux';
 import RecipeItem from './RecipeItem';
 import Colors from '../../constants/Colors';
@@ -24,8 +25,6 @@ class RecipeList extends React.PureComponent {
         this.setState({flatListReady: true});
     }
 
-    _keyExtractor = (item, index) => item.id.toString();
-
     _renderItem({item}) {
         return <RecipeItem
             recipe={item}
@@ -48,13 +47,13 @@ class RecipeList extends React.PureComponent {
     render() {
         return (
             <View style={styles.container}>
-                <FlatList
+                <FlatGrid
+                    itemDimension={250}
+                    items={this.props.recipes}
                     onMomentumScrollBegin={this._scrolled.bind(this)}
-                    data={this.props.recipes}
                     renderItem={this._renderItem.bind(this)}
-                    keyExtractor={this._keyExtractor}
                     style={styles.container}
-                    contentContainerStyle={{paddingHorizontal: 8, paddingBottom: 8}}
+                    contentContainerStyle={{paddingVertical: 8}}
                     onRefresh={this.props.onRefresh}
                     refreshing={this.props.refreshing}
                     onEndReached={() => {
@@ -72,8 +71,13 @@ class RecipeList extends React.PureComponent {
 };
 
 const styles = {
+    container: {
+        flex: 1,
+        paddingVertical: 2
+    },
+
     indicatorContainer: {
-        paddingVertical: 20,
+        paddingBottom: 8,
         flex: 1,
         alignItems: 'center',
         jusifyContent: 'center'

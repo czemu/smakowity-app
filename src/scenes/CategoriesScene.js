@@ -1,5 +1,6 @@
 import React from 'react';
-import { ActivityIndicator, ScrollView, FlatList, Text, View, Image, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, ScrollView, Text, View, Image, TouchableOpacity } from 'react-native';
+import { FlatGrid } from 'react-native-super-grid';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import TabBarIcon from '../components/common/TabBarIcon';
@@ -54,10 +55,10 @@ export class CategoriesScene extends React.Component {
     render() {
         return (
             <ScrollView style={styles.container}>
-                <FlatList
-                    data={this.props.categories}
+                <FlatGrid
+                    itemDimension={150}
+                    items={this.props.categories}
                     renderItem={this._renderItem.bind(this)}
-                    keyExtractor={this._keyExtractor}
                     contentContainerStyle={styles.listStyle}
                     ListFooterComponent={this._renderFooter.bind(this)}
                     horizontal={false}
@@ -71,15 +72,14 @@ export class CategoriesScene extends React.Component {
 const styles = {
     container: {
         flex: 1,
-        paddingHorizontal: 4
     },
 
     listStyle: {
-        paddingVertical: 8,
+        paddingVertical: 2,
     },
 
     indicatorContainer: {
-        paddingVertical: 20,
+        paddingBottom: 8,
         flex: 1,
         alignItems: 'center',
         jusifyContent: 'center'
@@ -90,7 +90,6 @@ const styles = {
     },
 
     box: {
-        margin: 4,
         padding: 3,
         height: 80,
         flex: 1,
@@ -101,11 +100,6 @@ const styles = {
         borderRadius: 5,
         overflow: 'hidden',
         position: 'relative',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 4,
-        elevation: 1,
     },
 
     imageWrapper: {
