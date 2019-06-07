@@ -143,7 +143,7 @@ const styles = {
         fontWeight: 'bold',
         textShadowColor: 'rgba(0, 0, 0, 0.8)',
         textShadowOffset: {width: 1, height: 1},
-        textShadowRadius: 30
+        textShadowRadius: 20
     }
 };
 
