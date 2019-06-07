@@ -7,7 +7,7 @@
     "platforms": [
       "android"
     ],
-    "version": "1.0.1",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -23,7 +23,7 @@
     ],"android": {
       "package": "pl.smakowity",
       "permissions": [],
-      "versionCode": 2
+      "versionCode": 4
     }
   }
 }
