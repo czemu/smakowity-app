@@ -5,7 +5,9 @@ import {
     Linking,
     Text,
     View,
-    AsyncStorage
+    AsyncStorage,
+    Button,
+    StatusBar
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import SearchHeader from '../components/common/SearchHeader';
@@ -18,6 +20,7 @@ import {
     updateFavoriteStatus,
 } from '../actions/RecipeActions';
 import RecipeList from '../components/Recipe/RecipeList';
+import Modal from "react-native-modal";
 
 export class HomeScene extends React.Component {
     static navigationOptions = {
@@ -38,28 +41,23 @@ export class HomeScene extends React.Component {
             limit: 12,
             offset: 0,
             more_items: 5,
-            max_items: 100
+            max_items: 100,
+            pp_modal_visible: false
         }
+    }
+
+    hidePrivacyPolicyModal = () => {
+       this.setState({ pp_modal_visible: false });
+    };
+
+    openPrivacyPolicy = () => {
+        Linking.openURL('https://smakowity.pl/app-privacy-policy');
     }
 
     componentDidMount() {
         AsyncStorage.getItem('privacy_policy_displayed', function(error, result) {
             if (result == null) {
-                Alert.alert(
-                  'Polityka prywatności',
-                  'Szanujemy Twoją prywatność. Czy chcesz dowiedzieć się więcej?',
-                  [
-                      {
-                          text: 'Zobacz politykę',
-                          onPress: () => {
-                              Linking.openURL('https://smakowity.pl/app-privacy-policy');
-                          }
-                      },
-                      {
-                          text: 'Przejdź do aplikacji',
-                      }
-                  ]
-                );
+                this.setState({ pp_modal_visible: true });
 
                 AsyncStorage.setItem('privacy_policy_displayed', '1');
             }
@@ -84,7 +82,7 @@ export class HomeScene extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <View style={{ flex: 1 }}>
                 <RecipeList
                     loading={this.props.loadingRecommended}
                     refreshing={this.props.refreshingRecommended}
@@ -94,6 +92,18 @@ export class HomeScene extends React.Component {
                     initialNumToRender={this.state.limit}
                     onEndReachedThreshold={0.7}
                 />
+                <Modal
+                    isVisible={this.state.pp_modal_visible}
+                    onBackdropPress={this.hidePrivacyPolicyModal}
+                    coverScreen={false}
+                >
+                    <View style={styles.modal}>
+                        <Text style={{marginBottom: 10, fontSize: 20, fontWeight: 'bold'}}>Polityka prywatności</Text>
+                        <Text>Szanujemy Twoją prywatność, z naszą polityką prywatności możesz zapoznać się pod adresem:</Text>
+                        <Text onPress={this.openPrivacyPolicy} style={{marginTop: 10, marginBottom: 20, color: '#3700B3'}}>https://smakowity.pl/app-privacy-policy</Text>
+                        <Button title="Przejdź do aplikacji" onPress={this.hidePrivacyPolicyModal} />
+                    </View>
+                </Modal>
             </View>
         );
     }
@@ -103,6 +113,11 @@ const styles = {
     container: {
         flex: 1,
     },
+
+    modal: {
+        padding: 20,
+        backgroundColor: '#fff'
+    }
 };
 
 const mapStateToProps = (state, ownProps) => {

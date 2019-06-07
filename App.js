@@ -11,7 +11,7 @@ export default class App extends React.Component {
     return (
         <Provider store={store}>
           <View style={styles.container}>
-            <StatusBar barStyle="light-content" backgroundColor="blue" translucent={false} />
+            <StatusBar barStyle="light-content" />
             <Router />
           </View>
         </Provider>
