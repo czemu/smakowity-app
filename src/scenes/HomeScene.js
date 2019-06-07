@@ -55,7 +55,7 @@ export class HomeScene extends React.Component {
     }
 
     componentDidMount() {
-        AsyncStorage.getItem('privacy_policy_displayed', function(error, result) {
+        AsyncStorage.getItem('privacy_policy_displayed', (error, result) => {
             if (result == null) {
                 this.setState({ pp_modal_visible: true });
 
