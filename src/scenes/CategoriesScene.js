@@ -61,8 +61,6 @@ export class CategoriesScene extends React.Component {
                     renderItem={this._renderItem.bind(this)}
                     contentContainerStyle={styles.listStyle}
                     ListFooterComponent={this._renderFooter.bind(this)}
-                    horizontal={false}
-                    numColumns={2}
                 />
             </ScrollView>
         );
