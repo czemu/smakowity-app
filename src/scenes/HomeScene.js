@@ -38,10 +38,10 @@ export class HomeScene extends React.Component {
         super(props);
 
         this.state = {
-            limit: 12,
+            limit: 20,
             offset: 0,
-            more_items: 5,
-            max_items: 100,
+            more_items: 20,
+            max_items: 1000,
             pp_modal_visible: false
         }
     }
@@ -79,7 +79,6 @@ export class HomeScene extends React.Component {
         }
     }
 
-
     render() {
         return (
             <View style={{ flex: 1 }}>
@@ -90,7 +89,7 @@ export class HomeScene extends React.Component {
                     onRefresh={this._onRefresh.bind(this)}
                     onEndReached={this._onEndReached.bind(this)}
                     initialNumToRender={this.state.limit}
-                    onEndReachedThreshold={0.7}
+                    onEndReachedThreshold={0.5}
                 />
                 <Modal
                     isVisible={this.state.pp_modal_visible}

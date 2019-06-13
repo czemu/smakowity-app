@@ -37,10 +37,10 @@ class SearchScene extends React.Component {
 
         this.state = {
             searchText: null,
-            limit: 10,
+            limit: 20,
             offset: 0,
-            more_items: 5,
-            max_items: 100
+            more_items: 20,
+            max_items: 500,
         }
     }
 
@@ -98,7 +98,7 @@ class SearchScene extends React.Component {
                     onRefresh={this._onRefresh.bind(this)}
                     onEndReached={this._onEndReached.bind(this)}
                     initialNumToRender={this.state.limit}
-                    onEndReachedThreshold={0.7}
+                    onEndReachedThreshold={0.5}
                     removeOnUnfavorite={true}
                     ListEmptyComponent={this._renderEmptyInfo}
                 />

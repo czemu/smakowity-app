@@ -29,10 +29,10 @@ class FavoritesScene extends React.Component {
         super(props);
 
         this.state = {
-            limit: 10,
+            limit: 20,
             offset: 0,
-            more_items: 10,
-            max_items: 100
+            more_items: 20,
+            max_items: 4000,
         }
     }
 
@@ -79,7 +79,7 @@ class FavoritesScene extends React.Component {
                     onRefresh={this._onRefresh.bind(this)}
                     onEndReached={this._onEndReached.bind(this)}
                     initialNumToRender={this.state.limit}
-                    onEndReachedThreshold={0.7}
+                    onEndReachedThreshold={0.5}
                     removeOnUnfavorite={true}
                     ListEmptyComponent={this._renderEmptyInfo}
                 />

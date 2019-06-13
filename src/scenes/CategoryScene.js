@@ -27,10 +27,10 @@ export class CategoryScene extends React.Component {
         super(props);
 
         this.state = {
-            limit: 12,
+            limit: 20,
             offset: 0,
-            more_items: 5,
-            max_items: 500
+            more_items: 20,
+            max_items: 4000,
         }
     }
 
@@ -69,7 +69,7 @@ export class CategoryScene extends React.Component {
                     onRefresh={this._onRefresh.bind(this)}
                     onEndReached={this._onEndReached.bind(this)}
                     initialNumToRender={this.state.limit}
-                    onEndReachedThreshold={0.7}
+                    onEndReachedThreshold={0.5}
                 />
             </View>
         );
