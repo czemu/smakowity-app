@@ -64,6 +64,7 @@ class RecipeList extends React.PureComponent {
                     onEndReachedThreshold={this.props.onEndReachedThreshold}
                     ListFooterComponent={this._renderFooter.bind(this)}
                     ListEmptyComponent={this.props.ListEmptyComponent}
+                    removeClippedSubviews={true}
                 />
             </View>
         );
