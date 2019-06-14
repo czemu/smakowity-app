@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityIndicator, ScrollView, View, Text, Image, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, ScrollView, View, Text, Image, TouchableOpacity, Share } from 'react-native';
 import { connect } from 'react-redux';
 import { Icon } from 'expo';
 import {
@@ -9,19 +9,84 @@ import {
 } from '../actions/RecipeActions';
 import Colors from '../constants/Colors';
 
+class TopActions extends React.PureComponent {
+    constructor(props) {
+        super(props);
+    }
+
+    handleFavoritePress() {
+        if ( ! this.props.params.isFavorited) {
+            this.props.params.addFavorite(this.props.params.recipeId);
+        } else {
+            this.props.params.removeFavorite(this.props.params.recipeId);
+        }
+    }
+
+    async handleShare () {
+        try {
+            const result = await Share.share({
+                message: this.props.params.recipeName + ': https://smakowity.pl/przepisy/' + this.props.params.recipeId,
+            });
+        } catch (error) {
+           alert(error.message);
+        }
+    }
+
+    render() {
+        return (
+            <View style={styles.topActionsContainer}>
+                <TouchableOpacity
+                    onPress={this.handleFavoritePress.bind(this)}
+                >
+                    <Icon.Ionicons
+                        style={styles.topActionsIcon}
+                        name={'md-heart'}
+                        size={24}
+                        color={this.props.params.isFavorited ? Colors.redColor : '#999'}
+                    />
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.topActionsIcon} onPress={this.handleShare.bind(this)}>
+                    <Icon.Ionicons
+                        style={styles.topActionsIcon}
+                        name={'md-share'}
+                        size={24}
+                        color={'#999'}
+                    />
+                </TouchableOpacity>
+            </View>
+        );
+    }
+}
+
 class RecipeScene extends React.PureComponent {
     constructor(props) {
         super(props);
     }
 
     static navigationOptions = ({ navigation }) => ({
-        title: `${navigation.state.params.recipeName}`,
+        headerTitle: <TopActions params={navigation.state.params} />,
         headerForceInset: { top: 'never', bottom: 'never' },
-        headerRight: null
     });
 
     componentWillMount() {
         this.props.fetchRecipe(this.props.recipeId);
+    }
+
+    componentDidMount() {
+        this.props.navigation.setParams({
+            addFavorite: this.props.addFavorite,
+            removeFavorite: this.props.removeFavorite,
+            isFavorited: this.props.isFavorited
+        });
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.isFavorited !== prevProps.isFavorited) {
+            this.props.navigation.setParams({
+                isFavorited: this.props.isFavorited
+            });
+        }
     }
 
     _formatImageDescription(text) {
@@ -70,14 +135,6 @@ class RecipeScene extends React.PureComponent {
         return text+' os.';
     }
 
-    _handleFavoritePress() {
-        if ( ! this.props.isFavorited) {
-            this.props.addFavorite(this.props.recipe.id);
-        } else {
-            this.props.removeFavorite(this.props.recipe.id);
-        }
-    }
-
     _renderRecipe() {
         if (this.props.loadingRecipe) {
             return (
@@ -91,20 +148,10 @@ class RecipeScene extends React.PureComponent {
             <ScrollView style={styles.container}>
                 <View style={styles.imageWrapper}>
                     <Image style={styles.image} source={{uri: this.props.recipe.img_url}} resizeMode="cover" />
-                    <TouchableOpacity
-                        style={{ ...styles.favContainer, ...{ backgroundColor: (this.props.isFavorited ? Colors.redColor : 'rgba(255, 255, 255, 0.3)') } }}
-                        onPress={this._handleFavoritePress.bind(this)}
-                    >
-                        <Icon.Ionicons
-                            style={styles.favIcon}
-                            name={'md-heart'}
-                            size={24}
-                            color={'#fff'}
-                         />
-                    </TouchableOpacity>
                     <Text style={styles.imageDescription}>{this._formatImageDescription(this.props.recipe.img_desc)}</Text>
                 </View>
                 <View style={styles.detailsContainer}>
+                    <Text style={styles.recipeName}>{this.props.recipe.name}</Text>
                     <View style={styles.iconsContainer}>
                         <View style={styles.iconBox}>
                             <View style={styles.iconBoxHeader}>
@@ -155,6 +202,18 @@ class RecipeScene extends React.PureComponent {
 };
 
 const styles = {
+    topActionsContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        flexDirection: 'row',
+        marginRight: 20
+    },
+
+    topActionsIcon: {
+        marginLeft: 15
+    },
+
     container: {
         flex: 1,
         margin: 0,
@@ -172,10 +231,6 @@ const styles = {
         position: 'absolute',
         top: 8,
         right: 8,
-    },
-
-    favIcon: {
-        marginTop: 3,
     },
 
     imageWrapper: {
@@ -222,6 +277,12 @@ const styles = {
         paddingHorizontal: 10,
         paddingVertical: 15,
         backgroundColor: '#fff'
+    },
+
+    recipeName: {
+        marginBottom: 15,
+        fontSize: 20,
+        fontWeight: 'bold'
     },
 
     iconsContainer: {
