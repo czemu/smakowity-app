@@ -36,19 +36,21 @@ class TopActions extends React.PureComponent {
         return (
             <View style={styles.topActionsContainer}>
                 <TouchableOpacity
+                    style={styles.topActionsIcon}
                     onPress={this.handleFavoritePress.bind(this)}
                 >
                     <Icon.Ionicons
-                        style={styles.topActionsIcon}
                         name={'md-heart'}
                         size={24}
                         color={this.props.params.isFavorited ? Colors.redColor : '#999'}
                     />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.topActionsIcon} onPress={this.handleShare.bind(this)}>
+                <TouchableOpacity
+                    style={styles.topActionsIcon}
+                    onPress={this.handleShare.bind(this)}
+                >
                     <Icon.Ionicons
-                        style={styles.topActionsIcon}
                         name={'md-share'}
                         size={24}
                         color={'#999'}
@@ -211,7 +213,8 @@ const styles = {
     },
 
     topActionsIcon: {
-        marginLeft: 15
+        marginLeft: 10,
+        padding: 5
     },
 
     container: {
