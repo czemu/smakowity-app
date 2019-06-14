@@ -63,7 +63,7 @@ import {
     getRecipesByCategory,
     getRecipesByQuery
 } from '../api/smakowity';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, ToastAndroid } from 'react-native';
 
 export function fetchRecommendedRecipesRequest() {
     return {
@@ -279,6 +279,8 @@ export function addFavorite(id) {
     return dispatch => {
         dispatch(favoriteRecipe(id));
 
+        ToastAndroid.show('Dodano przepis do ulubionych', ToastAndroid.SHORT);
+
         AsyncStorage.getItem('favorites', (error, result) => {
             if (result !== null) {
                 let newIds = JSON.parse(result).concat([id]);
@@ -300,6 +302,8 @@ export function addFavorite(id) {
 export function removeFavorite(id) {
     return dispatch => {
         dispatch(unfavoriteRecipe(id));
+
+        ToastAndroid.show('Usunięto przepis z ulubionych', ToastAndroid.SHORT);
 
         AsyncStorage.getItem('favorites', (error, result) => {
             if (result !== null) {
