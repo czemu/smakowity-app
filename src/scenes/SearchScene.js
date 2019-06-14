@@ -115,9 +115,9 @@ const styles = {
 
     noResults: {
         flex: 1,
+        flexGrow: 1,
         alignItems: 'center',
-        marginTop: '50%',
-        padding: 8,
+        justifyContent: 'center',
     },
 
     noResultsText: {

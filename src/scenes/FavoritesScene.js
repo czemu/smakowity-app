@@ -96,7 +96,7 @@ const styles = {
     noFavorites: {
         flex: 1,
         alignItems: 'center',
-        marginTop: '50%',
+        justifyContent: 'center',
         padding: 8,
     },
 

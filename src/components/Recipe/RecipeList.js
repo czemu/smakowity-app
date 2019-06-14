@@ -53,7 +53,7 @@ class RecipeList extends React.PureComponent {
                     onMomentumScrollBegin={this._scrolled.bind(this)}
                     renderItem={this._renderItem.bind(this)}
                     style={styles.container}
-                    contentContainerStyle={{paddingVertical: 8}}
+                    contentContainerStyle={{paddingVertical: 8, flexGrow: 1}}
                     onRefresh={this.props.onRefresh}
                     refreshing={this.props.refreshing}
                     onEndReached={() => {
