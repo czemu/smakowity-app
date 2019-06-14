@@ -322,7 +322,10 @@ export function getFavoriteIds() {
         try {
             favoriteIds = await AsyncStorage.getItem('favorites');
             favoriteIds = JSON.parse(favoriteIds);
-            favoriteIds = favoriteIds.reverse();
+
+            if (favoriteIds !== null) {
+                favoriteIds = favoriteIds.reverse();
+            }
 
             dispatch(getFavoriteIdsSuccess(favoriteIds));
         } catch (error) {
