@@ -40,7 +40,7 @@ class RecipeItem extends React.PureComponent {
                     style={styles.imageWrapper}
                     onPress={() => Actions.recipe({recipeId: this.props.recipe.id, recipeName: this.props.recipe.name})}
                 >
-                    <Image style={styles.image} source={{uri: this.props.recipe.img_url}} resizeMode="cover" />
+                    <Image style={styles.image} source={{uri: this.props.recipe.thumb_url}} resizeMode="cover" />
                     <TouchableOpacity
                         style={{ ...styles.favContainer, ...{ backgroundColor: (this.props.isFavorited ? Colors.redColor : 'rgba(255, 255, 255, 0.3)') } }}
                         onPress={this._handleFavoritePress.bind(this)}
