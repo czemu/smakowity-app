@@ -17,11 +17,11 @@ This app was built with [React Native](https://github.com/facebook/react-native)
 
 ## Screenshots
 
-![Screenshot](https://smakowity.pl/static/img/app/screen_1.png?v=2)
-![Screenshot](https://smakowity.pl/static/img/app/screen_2.png?v=2)
-![Screenshot](https://smakowity.pl/static/img/app/screen_3.png?v=2)
-![Screenshot](https://smakowity.pl/static/img/app/screen_4.png?v=3)
-![Screenshot](https://smakowity.pl/static/img/app/screen_5.png?v=2)
+![Screenshot](https://smakowity.pl/images/app/screen_1.png)
+![Screenshot](https://smakowity.pl/images/app/screen_2.png)
+![Screenshot](https://smakowity.pl/images/app/screen_3.png)
+![Screenshot](https://smakowity.pl/images/app/screen_4.png)
+![Screenshot](https://smakowity.pl/images/app/screen_5.png)
 
 ## License
 
