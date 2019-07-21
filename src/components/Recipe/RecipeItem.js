@@ -38,7 +38,7 @@ class RecipeItem extends React.PureComponent {
             <Animated.View style={[styles.container, {marginTop: this.props.index == 0 ? 0 : 2, opacity: this.state.animationValue}]}>
                 <TouchableOpacity
                     style={styles.imageWrapper}
-                    onPress={() => Actions.recipe({recipeId: this.props.recipe.id, recipeName: this.props.recipe.name})}
+                    onPress={() => Actions.recipe({recipeId: this.props.recipe.id, recipeName: this.props.recipe.name, recipeSlug: this.props.recipe.slug})}
                 >
                     <Image style={styles.image} source={{uri: this.props.recipe.thumb_url}} resizeMode="cover" />
                     <TouchableOpacity

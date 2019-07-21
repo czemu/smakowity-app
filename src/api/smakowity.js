@@ -7,6 +7,7 @@ export function getRecommendedRecipes(limit, offset) {
             recipes(limit: `+limit+`, offset: `+offset+`) {
                 id
                 name
+                slug
                 thumb_url
             }
         }
@@ -25,6 +26,7 @@ export function getRecipesById(recipeIds, limit, offset) {
             recipes(ids: [`+recipeIds.join(',')+`], limit: `+limit+`, offset: `+offset+`) {
                 id
                 name
+                slug
                 thumb_url
             }
         }
@@ -43,6 +45,7 @@ export function getRecipesByCategory(categoryId, limit, offset) {
             recipes(category_id: `+categoryId+`, limit: `+limit+`, offset: `+offset+`) {
                 id
                 name
+                slug
                 thumb_url
             }
         }
@@ -61,6 +64,7 @@ export function getRecipesByQuery(query, limit, offset) {
             recipes(search: "`+query+`", limit: `+limit+`, offset: `+offset+`) {
                 id
                 name
+                slug
                 thumb_url
             }
         }
@@ -79,6 +83,7 @@ export function getFullRecipe(recipeId) {
             recipes(ids: [`+recipeId+`]) {
                 id
                 name
+                slug
                 img_url
                 img_desc
                 ingredients

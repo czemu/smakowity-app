@@ -25,7 +25,7 @@ class TopActions extends React.PureComponent {
     async handleShare () {
         try {
             const result = await Share.share({
-                message: this.props.params.recipeName + ': https://smakowity.pl/przepisy/' + this.props.params.recipeId,
+                message: this.props.params.recipeName + ': https://smakowity.pl/przepisy/' + this.props.params.recipeId + '/' + this.props.params.recipeSlug,
             });
         } catch (error) {
            alert(error.message);
@@ -93,7 +93,7 @@ class RecipeScene extends React.PureComponent {
 
     _formatImageDescription(text) {
         if (text != undefined) {
-            return 'fot. '+text.replace(/<(?:.|\n)*?>/gm, '');
+            return text.replace(/<(?:.|\n)*?>/gm, '');
         }
 
         return text;
