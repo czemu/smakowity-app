@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Icon } from 'expo';
+import * as Icon from '@expo/vector-icons';
 import TabBarIcon from '../components/common/TabBarIcon';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
@@ -22,6 +22,7 @@ class SearchScene extends React.Component {
                     placeholder="Szukana fraza..."
                     onChangeText={navigation.getParam('searchFunc')}
                 />),
+            headerForceInset: { top: 'never', bottom: 'never' },
             tabBarLabel: 'Szukaj',
             tabBarIcon: ({ focused }) => (
                 <TabBarIcon

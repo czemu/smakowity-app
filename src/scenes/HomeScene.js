@@ -26,6 +26,7 @@ export class HomeScene extends React.Component {
     static navigationOptions = {
         title: 'Najnowsze przepisy',
         tabBarLabel: 'Start',
+        headerForceInset: { top: 'never', bottom: 'never' },
         tabBarIcon: ({ focused }) => (
           <TabBarIcon
             focused={focused}

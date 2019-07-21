@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, Animated } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
-import { Icon } from 'expo';
+import * as Icon from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
 import {
     addFavorite,

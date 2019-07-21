@@ -3,7 +3,7 @@
     "name": "Smakowity",
     "slug": "smakowity",
     "privacy": "public",
-    "sdkVersion": "32.0.0",
+    "sdkVersion": "33.0.0",
     "platforms": [
       "android"
     ],
@@ -23,7 +23,7 @@
     ],"android": {
       "package": "pl.smakowity",
       "permissions": [],
-      "versionCode": 11
+      "versionCode": 12
     }
   }
 }

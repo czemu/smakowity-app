@@ -1,7 +1,7 @@
 import React from 'react';
 import { ActivityIndicator, ScrollView, View, Text, Image, TouchableOpacity, Share } from 'react-native';
 import { connect } from 'react-redux';
-import { Icon } from 'expo';
+import * as Icon from '@expo/vector-icons';
 import {
     fetchRecipe,
     addFavorite,

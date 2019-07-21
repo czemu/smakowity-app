@@ -13,6 +13,7 @@ export class CategoriesScene extends React.Component {
     static navigationOptions = {
         title: 'Kategorie przepisów',
         tabBarLabel: 'Kategorie',
+        headerForceInset: { top: 'never', bottom: 'never' },
         tabBarIcon: ({ focused }) => (
             <TabBarIcon
                 focused={focused}

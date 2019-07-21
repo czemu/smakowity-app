@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, ScrollView, Text } from 'react-native';
-import { Icon } from 'expo';
+import * as Icon from '@expo/vector-icons';
 import TabBarIcon from '../components/common/TabBarIcon';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
@@ -16,6 +16,7 @@ import Colors from '../constants/Colors';
 class FavoritesScene extends React.Component {
     static navigationOptions = {
         title: 'Ulubione przepisy',
+        headerForceInset: { top: 'never', bottom: 'never' },
         tabBarLabel: 'Ulubione',
         tabBarIcon: ({ focused }) => (
             <TabBarIcon

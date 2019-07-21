@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TextInput } from 'react-native';
-import { Icon } from 'expo';
+import * as Icon from '@expo/vector-icons';
 
 export default class SearchHeader extends React.Component {
     render() {
