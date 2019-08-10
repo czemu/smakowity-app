@@ -11,8 +11,8 @@ import Colors from './constants/Colors';
 class RouterComponent extends React.PureComponent {
     render() {
         return (
-            <Router backAndroidHandler={() => (false)}>
-                <Stack key="root" hideNavBar={true}>
+            <Router backAndroidHandler={() => (false)} sceneStyle={{backgroundColor: '#eee'}}>
+                <Stack key="root" hideNavBar={true} >
                     <Stack tabs={true} tabBarStyle={styles.tabBarStyle} activeTintColor={Colors.redColor} headerForceInset={{ top: 'never' }}>
                         <Scene key="home" component={HomeScene } headerForceInset={{ top: 'never' }} />
                         <Scene key="categories" component={CategoriesScene} />
