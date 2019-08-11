@@ -36,18 +36,29 @@ class SearchScene extends React.Component {
     constructor(props) {
         super(props);
 
+        this.timeout = 0;
+
         this.state = {
             searchText: null,
             limit: 20,
             offset: 0,
             more_items: 20,
             max_items: 500,
+            timeout: 0
         }
     }
 
     searchFunction = (text) => {
-       this.setState({searchText: text});
-       this.props.fetchSearchRecipes(text, this.state.limit, 0);
+       text = text.trim();
+       
+       if (this.timeout) {
+           clearTimeout(this.timeout);
+       }
+
+       this.timeout = setTimeout(() => {
+           this.setState({searchText: text});
+           this.props.fetchSearchRecipes(text, this.state.limit, 0);
+       }, 300);
     }
 
     componentDidMount() {

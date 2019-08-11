@@ -72,7 +72,7 @@ export function getRecipesByQuery(query, limit, offset) {
   )
     .then(recipes => recipes.json())
     .then(recipes => {
-        return recipes.data.recipes;
+        return query.length ? recipes.data.recipes : [];
     });
 }
 

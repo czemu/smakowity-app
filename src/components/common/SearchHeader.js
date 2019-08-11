@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import * as Icon from '@expo/vector-icons';
 
 export default class SearchHeader extends React.Component {
@@ -10,6 +10,7 @@ export default class SearchHeader extends React.Component {
                     style={styles.input}
                     onChangeText={this.props.onChangeText}
                     placeholder={this.props.placeholder}
+                    clearButtonMode="always"
                     placeholderTextColor="#999"
                 />
                 <Icon.Ionicons
@@ -31,8 +32,7 @@ const styles = {
         alignItems: 'center'
     },
     input: {
-        paddingLeft: 36,
-        paddingRight: 8,
+        paddingHorizontal: 36,
         paddingVertical: 5,
         borderRadius: 6,
         backgroundColor: '#f5f5f5',

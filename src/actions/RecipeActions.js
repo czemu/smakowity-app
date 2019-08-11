@@ -325,7 +325,7 @@ export function getFavoriteIds() {
             if (favoriteIds !== null) {
                 favoriteIds = JSON.parse(favoriteIds);
                 favoriteIds = favoriteIds.reverse();
-                
+
                 dispatch(getFavoriteIdsSuccess(favoriteIds));
             }
 
