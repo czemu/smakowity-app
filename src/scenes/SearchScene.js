@@ -10,7 +10,9 @@ import {
     fetchSearchRecipes,
     refreshSearchRecipes,
     fetchMoreSearchRecipes,
-    updateFavoriteStatus,
+    updateSearchText,
+    clearSearchRecipes,
+    updateFavoriteStatus
 } from '../actions/RecipeActions';
 import Colors from '../constants/Colors';
 
@@ -19,8 +21,9 @@ class SearchScene extends React.Component {
         return {
             headerTitle: () => (
                 <SearchHeader
-                    placeholder="Szukana fraza..."
+                    placeholder="Wpisz nazwę przepisu"
                     onChangeText={navigation.getParam('searchFunc')}
+                    onClear={navigation.getParam('onClear')}
                 />),
             headerForceInset: { top: 'never', bottom: 'never' },
             tabBarLabel: 'Szukaj',
@@ -49,26 +52,34 @@ class SearchScene extends React.Component {
     }
 
     searchFunction = (text) => {
-       text = text.trim();
-       
-       if (this.timeout) {
-           clearTimeout(this.timeout);
-       }
+       this.props.updateSearchText(text);
 
-       this.timeout = setTimeout(() => {
-           this.setState({searchText: text});
-           this.props.fetchSearchRecipes(text, this.state.limit, 0);
-       }, 300);
+       if (text.length) {
+
+           if (this.timeout) {
+               clearTimeout(this.timeout);
+           }
+
+           this.timeout = setTimeout(() => {
+               this.props.fetchSearchRecipes(text.trim(), this.state.limit, 0);
+           }, 300);
+       } else {
+           this.props.clearSearchRecipes();
+       }
     }
 
     componentDidMount() {
-        this.props.navigation.setParams({searchFunc: this.searchFunction});
+        this.props.navigation.setParams({
+            searchFunc: this.searchFunction
+        });
 
         this.setState({offset: this.state.limit});
     }
 
     componentWillUnmount() {
-        this.props.navigation.setParams({searchFunc: null})
+        this.props.navigation.setParams({
+            searchFunc: null
+        });
     }
 
     _onRefresh() {
@@ -84,7 +95,9 @@ class SearchScene extends React.Component {
     }
 
     _renderEmptyInfo = () => {
-        if (this.state.searchText != null && this.state.searchText != '') {
+        if (this.props.loadingSearchRecipes) {
+            return null;
+        } else if (this.props.searchText != null && this.props.searchText != '') {
             return <Text style={styles.noResultsText}>Brak wyników wyszukiwania.</Text>;
         }
 
@@ -142,9 +155,9 @@ const styles = {
 
 const mapStateToProps = (state, ownProps) => {
     const reducer = state.RecipesReducer;
-    const { searchRecipes, loadingSearchRecipes, refreshingSearchRecipes } = reducer;
+    const { searchRecipes, searchText, loadingSearchRecipes, refreshingSearchRecipes } = reducer;
 
-    return { searchRecipes, loadingSearchRecipes, refreshingSearchRecipes };
+    return { searchRecipes, searchText, loadingSearchRecipes, refreshingSearchRecipes };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -152,6 +165,8 @@ const mapDispatchToProps = (dispatch) => {
         fetchSearchRecipes: (query, limit, offset) => dispatch(fetchSearchRecipes(query, limit, offset)),
         fetchMoreSearchRecipes: (query, limit, offset) => dispatch(fetchMoreSearchRecipes(query, limit, offset)),
         refreshSearchRecipes: (query, limit) => dispatch(refreshSearchRecipes(query, limit)),
+        updateSearchText: (text) => dispatch(updateSearchText(text)),
+        clearSearchRecipes: () => dispatch(clearSearchRecipes()),
         updateFavoriteStatus: () => dispatch(updateFavoriteStatus())
     }
 };

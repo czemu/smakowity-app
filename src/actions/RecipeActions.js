@@ -54,6 +54,9 @@ import {
     REFRESH_SEARCH_RECIPES_FAILURE,
 
     FETCH_MORE_SEARCH_RECIPES_SUCCESS,
+
+    CLEAR_SEARCH_RECIPES,
+    UPDATE_SEARCH_TEXT
 } from './types';
 
 import {
@@ -531,5 +534,18 @@ export function fetchMoreSearchRecipes(query, limit, offset) {
         return getRecipesByQuery(query, limit, offset)
             .then(recipes => dispatch(fetchMoreSearchRecipesSuccess(recipes)))
             .catch(() => dispatch(fetchSearchRecipesFailure()));
+    }
+}
+
+export function clearSearchRecipes() {
+    return {
+        type: CLEAR_SEARCH_RECIPES
+    }
+}
+
+export function updateSearchText(text) {
+    return {
+        type: UPDATE_SEARCH_TEXT,
+        payload: text
     }
 }
