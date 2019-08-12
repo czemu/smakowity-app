@@ -42,7 +42,6 @@ class SearchScene extends React.Component {
         this.timeout = 0;
 
         this.state = {
-            searchText: null,
             limit: 20,
             offset: 0,
             more_items: 20,
@@ -90,7 +89,7 @@ class SearchScene extends React.Component {
     _onEndReached() {
         if ( ! this.props.loadingSearchRecipes && ! this.props.refreshingSearchRecipes && (this.state.offset + this.state.more_items) <= this.state.max_items) {
             this.setState({offset: this.state.offset + this.state.more_items});
-            this.props.fetchMoreSearchRecipes(this.state.searchText, this.state.more_items, this.state.offset);
+            this.props.fetchMoreSearchRecipes(this.props.searchText, this.state.more_items, this.state.offset);
         }
     }
 
