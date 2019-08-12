@@ -53,6 +53,7 @@ import {
     REFRESH_SEARCH_RECIPES_SUCCESS,
     REFRESH_SEARCH_RECIPES_FAILURE,
 
+    FETCH_MORE_SEARCH_RECIPES,
     FETCH_MORE_SEARCH_RECIPES_SUCCESS,
 
     CLEAR_SEARCH_RECIPES,
@@ -497,6 +498,12 @@ export function refreshSearchRecipesFailure() {
     }
 }
 
+export function fetchMoreSearchRecipesRequest() {
+    return {
+        type: FETCH_MORE_SEARCH_RECIPES,
+    }
+}
+
 export function fetchMoreSearchRecipesSuccess(recipes) {
     return {
         type: FETCH_MORE_SEARCH_RECIPES_SUCCESS,
@@ -529,7 +536,7 @@ export function refreshSearchRecipes(query, limit) {
 
 export function fetchMoreSearchRecipes(query, limit, offset) {
     return dispatch => {
-        dispatch(fetchSearchRecipesRequest());
+        dispatch(fetchMoreSearchRecipesRequest());
 
         return getRecipesByQuery(query, limit, offset)
             .then(recipes => dispatch(fetchMoreSearchRecipesSuccess(recipes)))

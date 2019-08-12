@@ -53,6 +53,7 @@ import {
     REFRESH_SEARCH_RECIPES_SUCCESS,
     REFRESH_SEARCH_RECIPES_FAILURE,
 
+    FETCH_MORE_SEARCH_RECIPES,
     FETCH_MORE_SEARCH_RECIPES_SUCCESS,
 
     CLEAR_SEARCH_RECIPES,
@@ -75,6 +76,7 @@ const INITIAL_STATE = {
     refreshingCategory: false,
     searchRecipes: [],
     loadingSearchRecipes: false,
+    loadingMoreSearchRecipes: false,
     refreshingSearchRecipes: false,
     searchText: null
 };
@@ -220,10 +222,14 @@ export default (state = INITIAL_STATE, action) => {
         case REFRESH_SEARCH_RECIPES_FAILURE:
             return { ...state, refreshingSearchRecipes: false };
 
+        case FETCH_MORE_SEARCH_RECIPES:
+            return { ...state, loadingMoreSearchRecipes: true };
+
         case FETCH_MORE_SEARCH_RECIPES_SUCCESS:
             return {
                 ...state,
                 loadingSearchRecipes: false,
+                loadingMoreSearchRecipes: false,
                 searchRecipes: [...state.searchRecipes, ...action.payload]
             };
 

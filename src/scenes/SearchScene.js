@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import * as Icon from '@expo/vector-icons';
 import TabBarIcon from '../components/common/TabBarIcon';
 import { Actions } from 'react-native-router-flux';
@@ -113,10 +113,18 @@ class SearchScene extends React.Component {
     }
 
     render() {
+        if (this.props.loadingSearchRecipes) {
+            return (
+                <View style={styles.indicatorContainer}>
+                    <ActivityIndicator size="large" color={Colors.redColor} style={styles.indicator} />
+                </View>
+            );
+        }
+
         return (
             <View style={styles.container}>
                 <RecipeList
-                    loading={this.props.loadingSearchRecipes}
+                    loading={this.props.loadingMoreSearchRecipes}
                     refreshing={this.props.refreshingSearchRecipes}
                     recipes={this.props.searchRecipes}
                     onRefresh={this._onRefresh.bind(this)}
@@ -137,6 +145,14 @@ const styles = {
         flex: 1,
     },
 
+    indicatorContainer: {
+        paddingTop: 25
+    },
+
+    indicator: {
+        flex: 1,
+    },
+
     noResults: {
         flex: 1,
         flexGrow: 1,
@@ -154,9 +170,9 @@ const styles = {
 
 const mapStateToProps = (state, ownProps) => {
     const reducer = state.RecipesReducer;
-    const { searchRecipes, searchText, loadingSearchRecipes, refreshingSearchRecipes } = reducer;
+    const { searchRecipes, searchText, loadingSearchRecipes, loadingMoreSearchRecipes, refreshingSearchRecipes } = reducer;
 
-    return { searchRecipes, searchText, loadingSearchRecipes, refreshingSearchRecipes };
+    return { searchRecipes, searchText, loadingSearchRecipes, loadingMoreSearchRecipes, refreshingSearchRecipes };
 };
 
 const mapDispatchToProps = (dispatch) => {
