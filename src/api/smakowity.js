@@ -86,6 +86,7 @@ export function getFullRecipe(recipeId) {
                 slug
                 img_url
                 img_desc
+                short_description
                 ingredients
                 preparation_description
                 preparation_time

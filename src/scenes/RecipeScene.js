@@ -137,6 +137,16 @@ class RecipeScene extends React.PureComponent {
         return text+' os.';
     }
 
+    _renderShortDescription() {
+        if (this.props.recipe.short_description !== null) {
+            return (
+                <Text style={styles.shortDescription}>
+                    {this.props.recipe.short_description}
+                </Text>
+            )
+        }
+    }
+
     _renderRecipe() {
         if (this.props.loadingRecipe) {
             return (
@@ -189,6 +199,7 @@ class RecipeScene extends React.PureComponent {
                              <Text style={styles.iconBoxValue}>{this._formatServings(this.props.recipe.servings)}</Text>
                         </View>
                     </View>
+                    {this._renderShortDescription()}
                     <Text style={styles.textHeader}>Składniki:</Text>
                     <Text style={styles.longText}>{this._formatIngredients(this.props.recipe.ingredients)}</Text>
                     <Text style={styles.textHeader}>Opis przygotowania:</Text>
@@ -329,8 +340,14 @@ const styles = {
         color: Colors.greenColor
     },
 
+    shortDescription: {
+        marginTop: 10,
+        fontWeight: 'bold',
+        lineHeight: 20
+    },
+
     longText: {
-        lineHeight: 22
+        lineHeight: 20
     }
 }
 
